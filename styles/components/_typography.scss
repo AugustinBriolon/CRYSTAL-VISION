@@ -1,0 +1,67 @@
+.h1,
+h1,
+.h2,
+h2,
+.h3,
+h3 {
+  font-family: var(--font-bebas-neue);
+  letter-spacing: -0.05em;
+}
+
+.p1,
+.p2,
+p,
+.p3,
+.input,
+a,
+button {
+  font-family: var(--font-inter);
+  font-weight: 500;
+}
+// ========================================
+// =============== HEADINGS ===============
+// ========================================
+.h1,
+h1 {
+  font-size: clamp(38px, 5vw, 70px);
+  line-height: clamp(38px, 5vw, 70px);
+}
+
+.h2,
+h2 {
+  font-size: clamp(26px, 5vw, 48px);
+  line-height: clamp(26px, 5vw, 48px);
+}
+
+.h3,
+h3 {
+  font-size: 24px;
+  line-height: 24px;
+}
+
+// ========================================
+// ============== PARAGRAPHS ==============
+// ========================================
+.p1 {
+  font-size: clamp(26px, 5vw, 30px);
+  line-height: clamp(26px, 5vw, 30px);
+}
+
+p,
+.p2 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.p3 {
+  font-size: 16px;
+  line-height: 18px;
+}
+
+.font-bebas-neue {
+  font-family: var(--font-bebas-neue);
+}
+
+.font-poppins {
+  font-family: var(--font-poppins);
+}
