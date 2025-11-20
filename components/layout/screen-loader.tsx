@@ -1,4 +1,5 @@
 import { usePerformance } from '@/providers/performance.provider';
+import { useScreenLoader } from '@/providers/screen-loader.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useEffect, useRef, useState } from 'react';
@@ -8,6 +9,7 @@ const ScreenLoader = () => {
   const [counter, setCounter] = useState(0);
   const [counterComplete, setCounterComplete] = useState(false);
   const { isLoading } = usePerformance();
+  const { setIsComplete } = useScreenLoader();
 
   const { contextSafe } = useGSAP();
 
@@ -20,6 +22,7 @@ const ScreenLoader = () => {
         if (screenLoaderRef.current) {
           gsap.set(screenLoaderRef.current, { display: 'none' });
         }
+        setIsComplete(true);
       },
     });
   });

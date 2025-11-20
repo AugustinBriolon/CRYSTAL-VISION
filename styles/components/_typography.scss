@@ -1,23 +1,30 @@
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('/fonts/bebas-neue/BebasNeue.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/Inter.ttf') format('truetype');
+  font-weight: 400 500 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 .h1,
 h1,
 .h2,
 h2,
 .h3,
 h3 {
-  font-family: var(--font-bebas-neue);
+  font-family: 'Bebas Neue';
   letter-spacing: -0.05em;
 }
 
-.p1,
-.p2,
-p,
-.p3,
-.input,
-a,
-button {
-  font-family: var(--font-inter);
-  font-weight: 500;
-}
 // ========================================
 // =============== HEADINGS ===============
 // ========================================

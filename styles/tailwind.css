@@ -9,9 +9,6 @@
   --x-half-default: calc(var(--x-default) / 2);
   --y-half-default: calc(var(--y-default) / 2);
 
-  /* FONTS */
-  --font-sample: 'Sample', sans-serif;
-
   /* COLORS */
   --color-black: #202020;
   --color-white: #fbf7F4;
@@ -32,8 +29,8 @@
   --color-gray: #F3EFE8;
 
   /* FONTS */
-  --font-bebas-neue: var(--font-bebas-neue);
-  --font-inter: var(--font-inter);
+  --font-bebas-neue: 'Bebas Neue';
+  --font-inter: 'Inter';
 
   /* PADDING */
   --padding-x-half-default: var(--x-half-default);
