@@ -6,12 +6,14 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import nextPlugin from '@next/eslint-plugin-next';
 import prettierConfig from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
+import reactYouMightNotNeedAnEffect from "eslint-plugin-react-you-might-not-need-an-effect";
 
 const eslintConfig = [
   {
     ignores: ['**/node_modules', '**/.next', '**/.vercel'],
   },
   js.configs.recommended,
+  reactYouMightNotNeedAnEffect.configs.recommended,
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     languageOptions: {
@@ -164,6 +166,7 @@ const eslintConfig = [
       ],
 
       '@next/next/no-img-element': 'off',
+
       'react-hooks/rules-of-hooks': 'off',
       'react/no-unescaped-entities': 'off',
       'react-hooks/exhaustive-deps': 'off',

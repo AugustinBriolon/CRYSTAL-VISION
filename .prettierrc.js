@@ -7,5 +7,5 @@ module.exports = {
   plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-css-order'],
   tailwindFunctions: ['clsx'],
   cssDeclarationSorterOrder: 'smacss', // alphabetical || smacss || concentric-css
-  cssDeclarationSorterKeepOverrides: true,  
+  cssDeclarationSorterKeepOverrides: true,
 };

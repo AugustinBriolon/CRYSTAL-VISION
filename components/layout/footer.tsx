@@ -1,5 +1,3 @@
-import Section from '../shared/sections';
-
 const Footer = () => {
   return (
     <footer className="flex h-[50dvh] w-full flex-col items-center justify-center bg-white text-black">
