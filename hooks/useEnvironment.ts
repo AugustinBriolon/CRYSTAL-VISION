@@ -3,9 +3,7 @@ export const useEnvironment = () => {
   const hostname = isClient ? window.location.hostname : '';
 
   const isDev = hostname === 'localhost' || hostname === '127.0.0.1';
-  const isProd =
-    hostname === 'crystal-vision.paranthese.studio' ||
-    hostname === 'www.crystal-vision.paranthese.studio';
+  const isProd = hostname.includes('crystal-vision.paranthese.studio');
   const environment = isDev ? 'development' : 'production';
 
   return {
