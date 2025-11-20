@@ -2,9 +2,11 @@ import Section from '../shared/sections';
 
 export default function Contact() {
   return (
-    <Section className="flex flex-col items-center justify-center bg-black text-white" id="contact">
-      <h2>Contact</h2>
-      <p>This is the contact section</p>
+    <Section color="black">
+      <div className="flex h-full w-full flex-col items-center justify-center">
+        <h2>Contact</h2>
+        <p>This is the contact section</p>
+      </div>
     </Section>
   );
 }

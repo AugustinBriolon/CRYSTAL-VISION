@@ -8,35 +8,23 @@ import { usePerformance } from '@/providers/performance.provider';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { ReactNode, useEffect } from 'react';
-import { Bebas_Neue, Inter } from 'next/font/google';
+import { ReactNode, useEffect, useRef } from 'react';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
-
-const bebasNeue = Bebas_Neue({
-  subsets: ['latin'],
-  weight: '400',
-  display: 'swap',
-  variable: '--font-bebas-neue',
-  preload: true,
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-  variable: '--font-inter',
-  preload: true,
-});
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { isProd } = useEnvironment();
   const { isLoading } = usePerformance();
+  const hasRefreshedRef = useRef(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 100);
+    if (!isLoading && !hasRefreshedRef.current) {
+      hasRefreshedRef.current = true;
+
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    }
   }, [isLoading]);
 
   return (
@@ -47,13 +35,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
       {isLoading ? (
         <div className="bg-blue fixed inset-0 z-9998" />
       ) : (
-        <div className={`${bebasNeue.variable} ${inter.variable} mx-auto max-w-screen-2xl`}>
+        <>
           <Header />
-          <main className="mx-auto min-h-screen w-screen max-w-screen-xl overflow-hidden px-1">
-            {children}
-          </main>
+          <main className="min-h-screen w-screen">{children}</main>
           <Footer />
-        </div>
+        </>
       )}
 
       {!isProd && <PerformanceIndicator />}
