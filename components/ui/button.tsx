@@ -14,7 +14,7 @@ interface HeaderButtonProps {
 export const HeaderButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, HeaderButtonProps>(
   ({ href, icon, onClick, children, className }, ref) => {
     const buttonClassName = clsx(
-      'bg-gray flex h-9 w-fit items-center gap-1.5 rounded-full px-5 text-black',
+      'bg-gray flex h-9 w-fit cursor-pointer items-center gap-1.5 rounded-full px-6 text-black',
       className,
     );
 

@@ -5,9 +5,11 @@ import { HeaderButton } from '../ui/button';
 import ProgressivBlur from '../ui/progressiv-blur';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { useLenis } from 'lenis/react';
 
 const Header = () => {
   const { isComplete } = useScreenLoader();
+  const lenis = useLenis();
   const tableRef = {
     logo: useRef<HTMLAnchorElement>(null),
     linksContainer: useRef<HTMLDivElement>(null),
@@ -19,6 +21,19 @@ const Header = () => {
       contact: useRef<HTMLAnchorElement>(null),
     },
     cart: useRef<HTMLButtonElement>(null),
+  };
+
+  const scrollTo = (id: string) => {
+    const easing = (t: number): number => {
+      return -(Math.cos(Math.PI * t) - 1) / 2;
+    };
+
+    lenis?.scrollTo(id, {
+      duration: 1.2,
+      lerp: 0.08,
+      easing,
+      lock: true,
+    });
   };
 
   useGSAP(() => {
@@ -60,7 +75,12 @@ const Header = () => {
   return (
     <header className="fixed top-0 right-0 left-0 z-10 w-full">
       <ProgressivBlur className="mx-auto grid w-full max-w-screen-2xl grid-cols-[1fr_auto_1fr] items-center px-2 py-4">
-        <HeaderButton ref={tableRef.logo} className="font-bebas-neue text-lg" href="/">
+        <HeaderButton
+          ref={tableRef.logo}
+          className="font-bebas-neue text-lg"
+          href="/"
+          onClick={() => scrollTo('#hero')}
+        >
           CRYSTAL VISION
         </HeaderButton>
         <div
@@ -68,27 +88,52 @@ const Header = () => {
           className="bg-gray relative z-10 flex h-9 w-fit items-center gap-8 overflow-hidden rounded-full px-6 text-black"
         >
           <div className="overflow-hidden">
-            <Link ref={tableRef.links.about} className="block" href="#about">
+            <Link
+              ref={tableRef.links.about}
+              className="block cursor-pointer"
+              href="#about"
+              onClick={() => scrollTo('#about')}
+            >
               About
             </Link>
           </div>
           <div className="overflow-hidden">
-            <Link ref={tableRef.links.catalog} className="block" href="#catalog">
+            <Link
+              ref={tableRef.links.catalog}
+              className="block cursor-pointer"
+              href="#catalog"
+              onClick={() => scrollTo('#catalog')}
+            >
               Catalog
             </Link>
           </div>
           <div className="overflow-hidden">
-            <Link ref={tableRef.links.influencer} className="block" href="#influencer">
+            <Link
+              ref={tableRef.links.influencer}
+              className="block cursor-pointer"
+              href="#influencer"
+              onClick={() => scrollTo('#influencer')}
+            >
               Influencer
             </Link>
           </div>
           <div className="overflow-hidden">
-            <Link ref={tableRef.links.limitedEdition} className="block" href="#limited-edition">
+            <Link
+              ref={tableRef.links.limitedEdition}
+              className="block cursor-pointer"
+              href="#limited-edition"
+              onClick={() => scrollTo('#limited-edition')}
+            >
               Limited Edition
             </Link>
           </div>
           <div className="overflow-hidden">
-            <Link ref={tableRef.links.contact} className="block" href="#contact">
+            <Link
+              ref={tableRef.links.contact}
+              className="block cursor-pointer"
+              href="#contact"
+              onClick={() => scrollTo('#contact')}
+            >
               Contact
             </Link>
           </div>
