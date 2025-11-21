@@ -23,7 +23,7 @@ export default function Hero() {
   }, [isComplete]);
 
   return (
-    <Section ref={tableRef.container} className="rounded-t-4xl" color="white">
+    <Section ref={tableRef.container} className="rounded-t-4xl" color="white" id="hero">
       <div className="flex h-full w-full flex-col items-center justify-center">
         <h1>Hero</h1>
         <p>

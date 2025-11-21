@@ -17,8 +17,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const { isLoading } = usePerformance();
   const hasRefreshedRef = useRef(false);
 
-  console.log(isProd, isDev);
-
   useEffect(() => {
     if (!isLoading && !hasRefreshedRef.current) {
       hasRefreshedRef.current = true;
