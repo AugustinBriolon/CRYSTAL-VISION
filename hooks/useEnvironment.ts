@@ -1,19 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export const useEnvironment = () => {
-  const [isProd, setIsProd] = useState(true);
-  const [isDev, setIsDev] = useState(true);
-  const [environment, setEnvironment] = useState('production');
+  const getIsLocalhost = () => {
+    if (typeof window === 'undefined') return false;
+    return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  };
 
-  useEffect(() => {
-    const isLocalhost =
-      window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const isProd = window.location.hostname.includes('crystal-vision.paranthese.studio');
+  const getIsProd = () => {
+    if (typeof window === 'undefined') return true;
+    return window.location.hostname.includes('crystal-vision.paranthese.studio');
+  };
 
-    setIsDev(isLocalhost);
-    setIsProd(isProd);
-    setEnvironment(isLocalhost ? 'development' : 'production');
-  }, []);
+  const getEnvironment = () => {
+    const isLocalhost = getIsLocalhost();
+    return isLocalhost ? 'development' : 'production';
+  };
+
+  const [isProd] = useState(() => getIsProd());
+  const [isDev] = useState(() => getIsLocalhost());
+  const [environment] = useState(() => getEnvironment());
 
   return {
     isProd,
