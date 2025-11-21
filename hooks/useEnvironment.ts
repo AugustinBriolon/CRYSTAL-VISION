@@ -1,10 +1,19 @@
-export const useEnvironment = () => {
-  const isClient = typeof window !== 'undefined';
-  const hostname = isClient ? window.location.hostname : '';
+import { useState, useEffect } from 'react';
 
-  const isDev = hostname === 'localhost' || hostname === '127.0.0.1';
-  const isProd = hostname.includes('crystal-vision.paranthese.studio');
-  const environment = isDev ? 'development' : 'production';
+export const useEnvironment = () => {
+  const [isProd, setIsProd] = useState(true);
+  const [isDev, setIsDev] = useState(true);
+  const [environment, setEnvironment] = useState('production');
+
+  useEffect(() => {
+    const isLocalhost =
+      window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const isProd = window.location.hostname.includes('crystal-vision.paranthese.studio');
+
+    setIsDev(isLocalhost);
+    setIsProd(isProd);
+    setEnvironment(isLocalhost ? 'development' : 'production');
+  }, []);
 
   return {
     isProd,

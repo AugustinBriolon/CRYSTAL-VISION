@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 
 const getTimeRemaining = () => {
   try {
-    const cached = localStorage.getItem('metabole_performance_metrics');
+    const cached = localStorage.getItem('paranthese_performance_metrics');
     if (!cached) return 'no cache';
 
     const parsed = JSON.parse(cached);
@@ -96,7 +96,7 @@ const PerformanceIndicator = () => {
       </div>
 
       <button
-        className="flex cursor-pointer items-center gap-2 rounded-full border border-slate-400/30 bg-slate-300/30 px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl transition-all hover:scale-105"
+        className="flex cursor-pointer items-center gap-2 rounded-full border border-slate-400/30 bg-black px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl transition-all hover:scale-105"
         onClick={handleClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

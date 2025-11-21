@@ -26,12 +26,12 @@ interface PerformanceUtils {
   getConditionalProps: <T>(props: Record<PERFORMANCE_LEVEL, T>) => T | undefined;
 }
 
-const STORAGE_KEY = 'metabole_performance_metrics';
-const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+const STORAGE_KEY = 'paranthese_performance_metrics';
+const CACHE_DURATION = 30 * 60 * 1000;
 
 const THRESHOLDS = {
-  ANIMATION_HIGH: 500, // ms
-  ANIMATION_MEDIUM: 850, // ms
+  ANIMATION_HIGH: 500,
+  ANIMATION_MEDIUM: 850,
 } as const;
 
 interface CachedMetrics {
@@ -68,7 +68,6 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const detectPerformance = async () => {
-        // Vérification du cache (30 minutes)
         const getCachedMetrics = (): CachedMetrics | null => {
           try {
             const cached = localStorage.getItem(STORAGE_KEY);
@@ -98,7 +97,6 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           return;
         }
 
-        // Pas de cache valide, on lance le test
         console.info('🎯 Running performance test (no valid cache)...');
 
         const waitForStableState = async (): Promise<void> => {
