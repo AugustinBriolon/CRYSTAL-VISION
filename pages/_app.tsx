@@ -7,7 +7,7 @@ import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const reRender = useReactReRender(true);
+  const reRender = useReactReRender(false);
 
   useEffect(() => {
     reRender();
