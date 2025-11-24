@@ -5,28 +5,27 @@
   --x-double-default: calc(var(--x-default) * 2);
   --y-double-default: calc(var(--y-default) * 2);
   --x-default: clamp(20px, 7vw, 40px);
-  --y-default: clamp(20px, 8vh, 100px);
+  --y-default: clamp(50px, 15vh, 400px);
   --x-half-default: calc(var(--x-default) / 2);
   --y-half-default: calc(var(--y-default) / 2);
 
   /* COLORS */
-  --color-black: #202020;
-  --color-white: #fbf7F4;
-  --color-orange: #E84416;
-  --color-gray: #F3EFE8;
+  --black: #202020;
+  --white: #fbf7F4;
+  --orange: #E84416;
+  --gray: #F3EFE8;
 }
 
 @theme {
   /* COLORS */
-  /* Debug */
   --color-red: #ff5142;
   --color-blue: #001eff;
 
   /* Primary */
-  --color-black: #202020;
-  --color-white: #fbf7F4;
-  --color-orange: #E84416;
-  --color-gray: #F3EFE8;
+  --color-black: var(--black);
+  --color-white: var(--white);
+  --color-orange: var(--orange);
+  --color-gray: var(--gray);
 
   /* FONTS */
   --font-bebas-neue: 'Bebas Neue';

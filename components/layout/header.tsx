@@ -1,16 +1,26 @@
-import { useScreenLoader } from '@/providers/screen-loader.provider';
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { HeaderButton } from '../ui/button';
 import ProgressivBlur from '../ui/progressiv-blur';
 import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
 import { useLenis } from 'lenis/react';
+import { useScreenLoader } from '@/providers/screen-loader.provider';
+import {
+  HeaderRefs,
+  initializeHeaderAnimations,
+  animateHeaderEntry,
+  scrollToSection,
+  initializeMobileMenu,
+  animateMobileMenuOpen,
+  animateMobileMenuClose,
+} from '@/services/layout/header.service';
 
 const Header = () => {
   const { isComplete } = useScreenLoader();
   const lenis = useLenis();
-  const tableRef = {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const refs: HeaderRefs = {
     logo: useRef<HTMLAnchorElement>(null),
     linksContainer: useRef<HTMLDivElement>(null),
     links: {
@@ -21,76 +31,68 @@ const Header = () => {
       contact: useRef<HTMLAnchorElement>(null),
     },
     cart: useRef<HTMLButtonElement>(null),
+    menuButton: useRef<HTMLButtonElement>(null),
+    menuLine: {
+      line1: useRef<HTMLSpanElement>(null),
+      line2: useRef<HTMLSpanElement>(null),
+      line3: useRef<HTMLSpanElement>(null),
+    },
+    mobileMenu: useRef<HTMLDivElement>(null),
+    mobileMenuLinks: {
+      about: useRef<HTMLAnchorElement>(null),
+      catalog: useRef<HTMLAnchorElement>(null),
+      influencer: useRef<HTMLAnchorElement>(null),
+      limitedEdition: useRef<HTMLAnchorElement>(null),
+      contact: useRef<HTMLAnchorElement>(null),
+    },
   };
 
   const scrollTo = (id: string) => {
-    const easing = (t: number): number => {
-      return -(Math.cos(Math.PI * t) - 1) / 2;
-    };
+    scrollToSection(lenis, id);
+    if (isMobileMenuOpen) {
+      toggleMobileMenu();
+    }
+  };
 
-    lenis?.scrollTo(id, {
-      duration: 1.2,
-      lerp: 0.08,
-      easing,
-      lock: true,
-    });
+  const toggleMobileMenu = () => {
+    if (isMobileMenuOpen) {
+      animateMobileMenuClose(refs);
+      setIsMobileMenuOpen(false);
+    } else {
+      setIsMobileMenuOpen(true);
+      animateMobileMenuOpen(refs);
+    }
   };
 
   useGSAP(() => {
-    gsap.set(tableRef.logo.current, { y: -20, opacity: 0, scale: 0.8 });
-    gsap.set(tableRef.linksContainer.current, { y: -50, opacity: 0, scale: 0.8 });
-    gsap.set(tableRef.cart.current, { y: -50, opacity: 0, scale: 0.8 });
+    initializeHeaderAnimations(refs);
+    initializeMobileMenu(refs);
 
     if (isComplete) {
-      gsap
-        .timeline()
-        .to([tableRef.logo.current, tableRef.linksContainer.current, tableRef.cart.current], {
-          delay: 0.5,
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: 'power2.inOut',
-        })
-        .from(
-          [
-            tableRef.links.about.current,
-            tableRef.links.catalog.current,
-            tableRef.links.influencer.current,
-            tableRef.links.limitedEdition.current,
-            tableRef.links.contact.current,
-          ],
-          {
-            y: 50,
-            duration: 1.2,
-            stagger: 0.02,
-            ease: 'power2.inOut',
-          },
-          '-=0.8',
-        );
+      animateHeaderEntry(refs);
     }
   }, [isComplete]);
 
+  // Blocage du scroll quand le menu mobile est ouvert
+  useEffect(() => {
+    if (!lenis) return;
+
+    if (isMobileMenuOpen) {
+      lenis.stop();
+    } else {
+      lenis.start();
+    }
+  }, [isMobileMenuOpen, lenis]);
+
   return (
     <header className="fixed top-0 right-0 left-0 z-10 w-full">
-      <ProgressivBlur className="mx-auto grid w-full max-w-screen-2xl grid-cols-[1fr_auto_1fr] items-center px-2 py-4">
-        <HeaderButton
-          ref={tableRef.logo}
-          className="font-bebas-neue text-lg"
-          href="/"
-          onClick={() => scrollTo('#hero')}
-        >
-          CRYSTAL VISION
-        </HeaderButton>
-        <div
-          ref={tableRef.linksContainer}
-          className="bg-gray relative z-10 flex h-9 w-fit items-center gap-8 overflow-hidden rounded-full px-6 text-black"
-        >
+      {/* Menu Mobile */}
+      <div ref={refs.mobileMenu} className="fixed inset-0 bg-white md:hidden">
+        <div className="flex h-full flex-col items-center justify-center gap-8 px-6">
           <div className="overflow-hidden">
             <Link
-              ref={tableRef.links.about}
-              className="block cursor-pointer"
+              ref={refs.mobileMenuLinks.about}
+              className="block cursor-pointer text-4xl font-medium text-black uppercase"
               href="#about"
               onClick={() => scrollTo('#about')}
             >
@@ -99,8 +101,8 @@ const Header = () => {
           </div>
           <div className="overflow-hidden">
             <Link
-              ref={tableRef.links.catalog}
-              className="block cursor-pointer"
+              ref={refs.mobileMenuLinks.catalog}
+              className="block cursor-pointer text-4xl font-medium text-black uppercase"
               href="#catalog"
               onClick={() => scrollTo('#catalog')}
             >
@@ -109,8 +111,8 @@ const Header = () => {
           </div>
           <div className="overflow-hidden">
             <Link
-              ref={tableRef.links.influencer}
-              className="block cursor-pointer"
+              ref={refs.mobileMenuLinks.influencer}
+              className="block cursor-pointer text-4xl font-medium text-black uppercase"
               href="#influencer"
               onClick={() => scrollTo('#influencer')}
             >
@@ -119,8 +121,8 @@ const Header = () => {
           </div>
           <div className="overflow-hidden">
             <Link
-              ref={tableRef.links.limitedEdition}
-              className="block cursor-pointer"
+              ref={refs.mobileMenuLinks.limitedEdition}
+              className="block cursor-pointer text-4xl font-medium text-black uppercase"
               href="#limited-edition"
               onClick={() => scrollTo('#limited-edition')}
             >
@@ -129,8 +131,84 @@ const Header = () => {
           </div>
           <div className="overflow-hidden">
             <Link
-              ref={tableRef.links.contact}
-              className="block cursor-pointer"
+              ref={refs.mobileMenuLinks.contact}
+              className="block cursor-pointer text-4xl font-medium text-black uppercase"
+              href="#contact"
+              onClick={() => scrollTo('#contact')}
+            >
+              Contact
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Menu Desktop */}
+      <ProgressivBlur className="mx-auto grid w-full max-w-screen-2xl grid-cols-[1fr_auto_1fr] items-center px-2 py-4">
+        <HeaderButton
+          ref={refs.menuButton}
+          className="flex w-12! flex-col items-center justify-center gap-[6px] p-1 px-0! md:hidden"
+          onClick={toggleMobileMenu}
+        >
+          <span ref={refs.menuLine.line1} className="block h-0.5 w-6 rounded-full bg-black"></span>
+          <span ref={refs.menuLine.line2} className="block h-0.5 w-6 rounded-full bg-black"></span>
+          <span ref={refs.menuLine.line3} className="block h-0.5 w-6 rounded-full bg-black"></span>
+        </HeaderButton>
+        <HeaderButton
+          ref={refs.logo}
+          className="font-bebas-neue text-2xl md:text-lg"
+          href="/"
+          onClick={() => scrollTo('#hero')}
+        >
+          CRYSTAL VISION
+        </HeaderButton>
+        <div
+          ref={refs.linksContainer}
+          className="bg-gray relative z-10 hidden h-9 w-fit items-center gap-8 overflow-hidden rounded-full px-6 text-black md:flex"
+        >
+          <div className="overflow-hidden">
+            <Link
+              ref={refs.links.about}
+              className="block cursor-pointer font-medium"
+              href="#about"
+              onClick={() => scrollTo('#about')}
+            >
+              About
+            </Link>
+          </div>
+          <div className="overflow-hidden">
+            <Link
+              ref={refs.links.catalog}
+              className="block cursor-pointer font-medium"
+              href="#catalog"
+              onClick={() => scrollTo('#catalog')}
+            >
+              Catalog
+            </Link>
+          </div>
+          <div className="overflow-hidden">
+            <Link
+              ref={refs.links.influencer}
+              className="block cursor-pointer font-medium"
+              href="#influencer"
+              onClick={() => scrollTo('#influencer')}
+            >
+              Influencer
+            </Link>
+          </div>
+          <div className="overflow-hidden">
+            <Link
+              ref={refs.links.limitedEdition}
+              className="block cursor-pointer font-medium"
+              href="#limited-edition"
+              onClick={() => scrollTo('#limited-edition')}
+            >
+              Limited Edition
+            </Link>
+          </div>
+          <div className="overflow-hidden">
+            <Link
+              ref={refs.links.contact}
+              className="block cursor-pointer font-medium"
               href="#contact"
               onClick={() => scrollTo('#contact')}
             >
@@ -139,12 +217,12 @@ const Header = () => {
           </div>
         </div>
         <HeaderButton
-          ref={tableRef.cart}
-          className="ml-auto"
+          ref={refs.cart}
+          className="ml-auto w-12! justify-center px-0! font-medium md:w-fit! md:px-6!"
           icon="shopping-bag"
           onClick={() => {}}
         >
-          Cart (0)
+          <span className="hidden md:inline">Cart (0)</span>
         </HeaderButton>
       </ProgressivBlur>
     </header>

@@ -1,0 +1,84 @@
+import gsap from 'gsap';
+
+export interface HeroRefs {
+  container: React.RefObject<HTMLDivElement | null>;
+  title: React.RefObject<HTMLHeadingElement | null>;
+  image: React.RefObject<HTMLDivElement | null>;
+  extraText: {
+    first: React.RefObject<HTMLParagraphElement | null>;
+    second: React.RefObject<HTMLParagraphElement | null>;
+    third: React.RefObject<HTMLParagraphElement | null>;
+    fourth: React.RefObject<HTMLParagraphElement | null>;
+  };
+  titleImage: React.RefObject<HTMLImageElement | null>;
+}
+
+export const initializeHeroAnimations = (refs: HeroRefs) => {
+  gsap.set(refs.container.current, { yPercent: 100 });
+  gsap.set(refs.titleImage.current, { yPercent: 100, scale: 0.9 });
+  gsap.set(refs.image.current, { yPercent: -100 });
+  gsap.set(
+    [
+      refs.title.current,
+      refs.extraText.first.current,
+      refs.extraText.second.current,
+      refs.extraText.third.current,
+      refs.extraText.fourth.current,
+    ],
+    { yPercent: 100 },
+  );
+};
+
+export const animateHeroEntry = (refs: HeroRefs) => {
+  const timeline = gsap.timeline();
+
+  timeline
+    .to(refs.container.current, {
+      yPercent: 0,
+      scale: 1,
+      duration: 2.2,
+      ease: 'power4.out',
+    })
+    .to(
+      refs.titleImage.current,
+      {
+        yPercent: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: 'power3.inOut',
+      },
+      '-=0.8',
+    )
+    .to(
+      refs.title.current,
+      {
+        yPercent: 0,
+        duration: 0.8,
+        ease: 'power3.inOut',
+      },
+      '-=0.4',
+    )
+    .to(
+      refs.image.current,
+      {
+        yPercent: 0,
+        duration: 0.8,
+        ease: 'power3.inOut',
+      },
+      '<',
+    )
+    .to(
+      [
+        refs.extraText.first.current,
+        refs.extraText.second.current,
+        refs.extraText.third.current,
+        refs.extraText.fourth.current,
+      ],
+      {
+        yPercent: 0,
+        duration: 0.8,
+        stagger: 0.05,
+        ease: 'power3.inOut',
+      }, '<',
+    );
+};

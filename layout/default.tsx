@@ -13,7 +13,7 @@ import { ReactNode, useEffect, useRef } from 'react';
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const { isProd, isDev } = useEnvironment();
+  const { isProd } = useEnvironment();
   const { isLoading } = usePerformance();
   const hasRefreshedRef = useRef(false);
 
