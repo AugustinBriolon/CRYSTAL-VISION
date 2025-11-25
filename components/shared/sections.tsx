@@ -20,6 +20,4 @@ const Section = forwardRef<
   );
 });
 
-Section.displayName = 'Section';
-
 export default Section;

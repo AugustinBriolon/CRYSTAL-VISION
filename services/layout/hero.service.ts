@@ -44,7 +44,7 @@ export const animateHeroEntry = (refs: HeroRefs) => {
       {
         yPercent: 0,
         scale: 1,
-        duration: 1.2,
+        duration: 0.8,
         ease: 'power3.inOut',
       },
       '-=0.8',
@@ -56,7 +56,7 @@ export const animateHeroEntry = (refs: HeroRefs) => {
         duration: 0.8,
         ease: 'power3.inOut',
       },
-      '-=0.4',
+      '<',
     )
     .to(
       refs.image.current,
@@ -79,6 +79,7 @@ export const animateHeroEntry = (refs: HeroRefs) => {
         duration: 0.8,
         stagger: 0.05,
         ease: 'power3.inOut',
-      }, '<',
+      },
+      '-=0.4',
     );
 };

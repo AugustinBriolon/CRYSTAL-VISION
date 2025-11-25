@@ -5,12 +5,14 @@ type ScrollConfig = {
   duration: number;
   lerp: number;
   lock: boolean;
+  offset: number;
 };
 
 export const SCROLL_CONFIG: ScrollConfig = {
   duration: 1.2,
   lerp: 0.08,
   lock: true,
+  offset: -100,
 };
 
 export const easing = (t: number): number => {
@@ -104,6 +106,7 @@ export type LenisInstance = {
       lerp?: number;
       easing?: (t: number) => number;
       lock?: boolean;
+      offset?: number;
     },
   ) => void;
   stop: () => void;
@@ -118,6 +121,7 @@ export const scrollToSection = (lenis: LenisInstance | null | undefined, id: str
     lerp: SCROLL_CONFIG.lerp,
     easing,
     lock: SCROLL_CONFIG.lock,
+    offset: SCROLL_CONFIG.offset,
   });
 };
 

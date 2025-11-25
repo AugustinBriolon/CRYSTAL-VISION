@@ -56,7 +56,7 @@ export default function Hero() {
               width={1000}
             />
             <div className="absolute right-0 bottom-4 w-full px-4">
-              <Button className="bg-orange w-full justify-center px-6 py-3 text-xs font-medium whitespace-nowrap text-white">
+              <Button className="bg-orange w-full justify-center px-6 py-3 text-xs font-medium whitespace-nowrap text-white md:text-base">
                 Show now
               </Button>
             </div>
