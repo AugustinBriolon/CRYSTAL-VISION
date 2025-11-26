@@ -36,11 +36,11 @@ export default function Hero() {
   return (
     <Section
       ref={refs.container}
-      className="relative h-fit min-h-fit rounded-t-4xl md:h-dvh md:min-h-dvh"
+      className="h-fit min-h-fit rounded-t-4xl md:h-dvh md:min-h-dvh"
       color="white"
       id="hero"
     >
-      <div className="py-y-default grid h-full w-full grid-cols-[1fr_50vw_1fr] grid-rows-[auto_1fr] gap-3 text-black md:grid-cols-3 md:gap-5">
+      <div className="py-y-default relative grid h-full w-full grid-cols-[1fr_50vw_1fr] grid-rows-[auto_1fr] gap-3 text-black md:grid-cols-[1fr_auto_1fr] md:gap-5">
         <div className="col-start-2 overflow-hidden md:col-start-2 md:col-end-2">
           <h2 ref={refs.title} className="text-center whitespace-nowrap">
             EYEWEAR THAT <br /> DEFINES STYLE
@@ -50,7 +50,7 @@ export default function Hero() {
           <div ref={refs.image} className="relative h-full overflow-hidden rounded-4xl">
             <Image
               alt="Hero Image"
-              className="h-full w-auto object-cover md:h-full"
+              className="h-full w-auto object-cover md:h-full xl:max-w-[25vw]"
               height={1000}
               src="/images/hero/img1.webp"
               width={1000}
@@ -84,16 +84,16 @@ export default function Hero() {
             </p>
           </div>
         </div>
-      </div>
-      <div className="absolute right-0 bottom-25 -z-1 h-fit w-full overflow-hidden px-4 md:bottom-8">
-        <Image
-          ref={refs.titleImage}
-          alt="CRYSTAL VISION"
-          className="h-auto w-full"
-          height={1000}
-          src="/images/hero/title.svg"
-          width={1000}
-        />{' '}
+        <div className="absolute right-0 bottom-25 -z-1 h-fit w-full overflow-hidden px-4 md:bottom-8">
+          <Image
+            ref={refs.titleImage}
+            alt="CRYSTAL VISION"
+            className="h-auto w-full"
+            height={1000}
+            src="/images/hero/title.svg"
+            width={1000}
+          />{' '}
+        </div>
       </div>
     </Section>
   );
