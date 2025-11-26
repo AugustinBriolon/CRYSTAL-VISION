@@ -10,7 +10,7 @@ const Section = forwardRef<
       ref={ref}
       id={id}
       className={clsx(
-        'h-dvh min-h-dvh w-full',
+        'block h-dvh min-h-dvh w-full',
         color === 'white' ? 'bg-white' : 'bg-black',
         className,
       )}

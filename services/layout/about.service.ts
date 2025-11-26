@@ -40,7 +40,7 @@ export const animateAboutEntry = (refs: AboutRefs) => {
       trigger: refs.sectionContainer.current,
       start: isMobile ? 'top 60%' : 'top 80%',
       end: 'bottom top',
-      markers: true,
+      // markers: true,
     },
   });
 
