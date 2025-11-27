@@ -1,20 +1,6 @@
 import gsap from 'gsap';
 import React from 'react';
 
-type ScrollConfig = {
-  duration: number;
-  lerp: number;
-  lock: boolean;
-  offset: number;
-};
-
-export const SCROLL_CONFIG: ScrollConfig = {
-  duration: 1.2,
-  lerp: 0.08,
-  lock: true,
-  offset: -100,
-};
-
 export const easing = (t: number): number => {
   return -(Math.cos(Math.PI * t) - 1) / 2;
 };
@@ -117,11 +103,11 @@ export const scrollToSection = (lenis: LenisInstance | null | undefined, id: str
   if (!lenis) return;
 
   lenis.scrollTo(id, {
-    duration: SCROLL_CONFIG.duration,
-    lerp: SCROLL_CONFIG.lerp,
+    duration: 1.2,
+    lerp: 0.08,
     easing,
-    lock: SCROLL_CONFIG.lock,
-    offset: SCROLL_CONFIG.offset,
+    lock: true,
+    offset: -100,
   });
 };
 

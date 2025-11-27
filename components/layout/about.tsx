@@ -15,7 +15,7 @@ export default function About() {
   };
 
   useGSAP(() => {
-    if (!isFontReady) return;
+    if (isFontReady) return;
     animateAboutEntry(refs);
   }, [isFontReady]);
 
@@ -31,16 +31,12 @@ export default function About() {
         className="flex h-full w-full origin-center flex-col items-center justify-center gap-8 rounded-4xl bg-black px-8 py-12 md:gap-16 md:py-24"
       >
         <div className="flex flex-col items-center justify-center gap-2">
-          <div className="overflow-hidden">
-            <h2 ref={refs.title1} className="text-center text-pretty">
-              IT'S NOT JUST AN ACCESSORY.
-            </h2>
-          </div>
-          <div className="overflow-hidden">
-            <h2 ref={refs.title2} className="text-center text-pretty">
-              IT'S PART OF YOUR IMAGE.
-            </h2>
-          </div>
+          <h2 ref={refs.title1} className="text-center text-pretty">
+            IT'S NOT JUST AN ACCESSORY.
+          </h2>
+          <h2 ref={refs.title2} className="text-center text-pretty">
+            IT'S PART OF YOUR IMAGE.
+          </h2>
         </div>
         <p ref={refs.description} className="text-center text-balance text-white md:max-w-1/2">
           Our brand was born from the idea of combining aesthetics, comfort, and modern design. Each
