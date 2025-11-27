@@ -4,6 +4,7 @@ import Cursor from '@/components/ui/cursor';
 import PerformanceIndicator from '@/components/ui/performance-indicator';
 import SEO from '@/components/ui/SEO';
 import { useEnvironment } from '@/hooks/useEnvironment';
+import { useFontReady } from '@/hooks/useFontReady';
 import { usePerformance } from '@/providers/performance.provider';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -15,6 +16,7 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 const Layout = ({ children }: { children: ReactNode }) => {
   const { isProd } = useEnvironment();
   const { isLoading } = usePerformance();
+  const isFontReady = useFontReady();
   const hasRefreshedRef = useRef(false);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <Cursor />
       <SEO />
 
-      {isLoading ? (
+      {isLoading || !isFontReady ? (
         <div className="bg-blue fixed inset-0 z-9998" />
       ) : (
         <>

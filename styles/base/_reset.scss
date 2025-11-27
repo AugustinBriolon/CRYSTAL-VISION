@@ -4,6 +4,8 @@ body {
   color: var(--color-white);
   font-size: 16px;
   font-family: var(--font-inter);
+  font-kerning: none; 
+  text-rendering: optimizeSpeed;
 }
 
 html {

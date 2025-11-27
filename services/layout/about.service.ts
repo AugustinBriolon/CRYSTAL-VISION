@@ -18,19 +18,19 @@ export const animateAboutEntry = (refs: AboutRefs) => {
   });
 
   const splitTitle1Instance = SplitText.create(refs.title1.current, {
-    type: 'lines, words',
+    type: 'lines',
     mask: 'lines',
   });
   gsap.set(splitTitle1Instance.lines, { yPercent: 100 });
 
   const splitTitle2Instance = SplitText.create(refs.title2.current, {
-    type: 'lines, words',
+    type: 'lines',
     mask: 'lines',
   });
   gsap.set(splitTitle2Instance.lines, { yPercent: 100 });
 
   const splitTextInstance = SplitText.create(refs.description.current, {
-    type: 'lines, words',
+    type: 'lines',
     mask: 'lines',
   });
   gsap.set(splitTextInstance.lines, { yPercent: 100 });
@@ -40,7 +40,6 @@ export const animateAboutEntry = (refs: AboutRefs) => {
       trigger: refs.sectionContainer.current,
       start: isMobile ? 'top 60%' : 'top 80%',
       end: 'bottom top',
-      // markers: true,
     },
   });
 
