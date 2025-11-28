@@ -1,5 +1,5 @@
 import Section from '@/components/shared/sections';
-import CatalogCard from '../ui/catalogCard';
+import CatalogCard from '../ui/catalog-card';
 import {
   animateCatalogEntry,
   animateScrollHorizontal,

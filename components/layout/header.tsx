@@ -9,10 +9,9 @@ import {
   HeaderRefs,
   initializeHeaderAnimations,
   animateHeaderEntry,
-  scrollToSection,
+  scrollToSectionWithMenuClose,
   initializeMobileMenu,
-  animateMobileMenuOpen,
-  animateMobileMenuClose,
+  toggleMobileMenu,
 } from '@/services/layout/header.service';
 
 const Header = () => {
@@ -47,21 +46,9 @@ const Header = () => {
     },
   };
 
-  const scrollTo = (id: string) => {
-    scrollToSection(lenis, id);
-    if (isMobileMenuOpen) {
-      toggleMobileMenu();
-    }
-  };
-
-  const toggleMobileMenu = () => {
-    if (isMobileMenuOpen) {
-      animateMobileMenuClose(refs);
-      setIsMobileMenuOpen(false);
-    } else {
-      setIsMobileMenuOpen(true);
-      animateMobileMenuOpen(refs);
-    }
+  const scrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    scrollToSectionWithMenuClose(lenis, refs, isMobileMenuOpen, setIsMobileMenuOpen, id);
   };
 
   useGSAP(() => {
@@ -73,7 +60,6 @@ const Header = () => {
     }
   }, [isComplete]);
 
-  // Blocage du scroll quand le menu mobile est ouvert
   useEffect(() => {
     if (!lenis) return;
 
@@ -94,7 +80,7 @@ const Header = () => {
               ref={refs.mobileMenuLinks.about}
               className="block cursor-pointer text-4xl font-medium text-black uppercase"
               href="#about"
-              onClick={() => scrollTo('#about')}
+              onClick={(e) => scrollTo(e, '#about')}
             >
               About
             </Link>
@@ -104,19 +90,9 @@ const Header = () => {
               ref={refs.mobileMenuLinks.catalog}
               className="block cursor-pointer text-4xl font-medium text-black uppercase"
               href="#catalog"
-              onClick={() => scrollTo('#catalog')}
+              onClick={(e) => scrollTo(e, '#catalog')}
             >
               Catalog
-            </Link>
-          </div>
-          <div className="overflow-hidden">
-            <Link
-              ref={refs.mobileMenuLinks.influencer}
-              className="block cursor-pointer text-4xl font-medium text-black uppercase"
-              href="#influencer"
-              onClick={() => scrollTo('#influencer')}
-            >
-              Influencer
             </Link>
           </div>
           <div className="overflow-hidden">
@@ -124,9 +100,19 @@ const Header = () => {
               ref={refs.mobileMenuLinks.limitedEdition}
               className="block cursor-pointer text-4xl font-medium text-black uppercase"
               href="#limited-edition"
-              onClick={() => scrollTo('#limited-edition')}
+              onClick={(e) => scrollTo(e, '#limited-edition')}
             >
               Limited Edition
+            </Link>
+          </div>
+          <div className="overflow-hidden">
+            <Link
+              ref={refs.mobileMenuLinks.influencer}
+              className="block cursor-pointer text-4xl font-medium text-black uppercase"
+              href="#influencer"
+              onClick={(e) => scrollTo(e, '#influencer')}
+            >
+              Influencer
             </Link>
           </div>
           <div className="overflow-hidden">
@@ -134,7 +120,7 @@ const Header = () => {
               ref={refs.mobileMenuLinks.contact}
               className="block cursor-pointer text-4xl font-medium text-black uppercase"
               href="#contact"
-              onClick={() => scrollTo('#contact')}
+              onClick={(e) => scrollTo(e, '#contact')}
             >
               Contact
             </Link>
@@ -147,7 +133,7 @@ const Header = () => {
         <HeaderButton
           ref={refs.menuButton}
           className="flex w-12! flex-col items-center justify-center gap-[6px] p-1 px-0! md:hidden"
-          onClick={toggleMobileMenu}
+          onClick={() => toggleMobileMenu(refs, isMobileMenuOpen, setIsMobileMenuOpen)}
         >
           <span ref={refs.menuLine.line1} className="block h-0.5 w-6 rounded-full bg-black"></span>
           <span ref={refs.menuLine.line2} className="block h-0.5 w-6 rounded-full bg-black"></span>
@@ -157,7 +143,16 @@ const Header = () => {
           ref={refs.logo}
           className="font-bebas-neue text-2xl md:text-lg"
           href="/"
-          onClick={() => scrollTo('#hero')}
+          onClick={(e) => {
+            e?.preventDefault();
+            scrollToSectionWithMenuClose(
+              lenis,
+              refs,
+              isMobileMenuOpen,
+              setIsMobileMenuOpen,
+              '#hero',
+            );
+          }}
         >
           CRYSTAL VISION
         </HeaderButton>
@@ -170,7 +165,7 @@ const Header = () => {
               ref={refs.links.about}
               className="block cursor-pointer font-medium"
               href="#about"
-              onClick={() => scrollTo('#about')}
+              onClick={(e) => scrollTo(e, '#about')}
             >
               About
             </Link>
@@ -180,19 +175,9 @@ const Header = () => {
               ref={refs.links.catalog}
               className="block cursor-pointer font-medium"
               href="#catalog"
-              onClick={() => scrollTo('#catalog')}
+              onClick={(e) => scrollTo(e, '#catalog')}
             >
               Catalog
-            </Link>
-          </div>
-          <div className="overflow-hidden">
-            <Link
-              ref={refs.links.influencer}
-              className="block cursor-pointer font-medium"
-              href="#influencer"
-              onClick={() => scrollTo('#influencer')}
-            >
-              Influencer
             </Link>
           </div>
           <div className="overflow-hidden">
@@ -200,9 +185,19 @@ const Header = () => {
               ref={refs.links.limitedEdition}
               className="block cursor-pointer font-medium"
               href="#limited-edition"
-              onClick={() => scrollTo('#limited-edition')}
+              onClick={(e) => scrollTo(e, '#limited-edition')}
             >
               Limited Edition
+            </Link>
+          </div>
+          <div className="overflow-hidden">
+            <Link
+              ref={refs.links.influencer}
+              className="block cursor-pointer font-medium"
+              href="#influencer"
+              onClick={(e) => scrollTo(e, '#influencer')}
+            >
+              Influencer
             </Link>
           </div>
           <div className="overflow-hidden">
@@ -210,7 +205,7 @@ const Header = () => {
               ref={refs.links.contact}
               className="block cursor-pointer font-medium"
               href="#contact"
-              onClick={() => scrollTo('#contact')}
+              onClick={(e) => scrollTo(e, '#contact')}
             >
               Contact
             </Link>
@@ -222,7 +217,7 @@ const Header = () => {
           icon="shopping-bag"
           onClick={() => {}}
         >
-          <span className="hidden md:inline">Cart (0)</span>
+          <span className="hidden lg:inline">Cart (0)</span>
         </HeaderButton>
       </ProgressivBlur>
     </header>
