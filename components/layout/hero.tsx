@@ -9,6 +9,7 @@ import { useRef } from 'react';
 import Section from '../shared/sections';
 import Image from 'next/image';
 import { Button } from '../ui/button';
+import FullWidthTitle from '../ui/full-width-title';
 
 export default function Hero() {
   const { isComplete } = useScreenLoader();
@@ -22,7 +23,7 @@ export default function Hero() {
       third: useRef<HTMLParagraphElement>(null),
       fourth: useRef<HTMLParagraphElement>(null),
     },
-    titleImage: useRef<HTMLImageElement>(null),
+    titleImage: useRef<HTMLDivElement>(null),
   };
 
   useGSAP(() => {
@@ -85,14 +86,7 @@ export default function Hero() {
           </div>
         </div>
         <div className="absolute right-0 bottom-25 -z-1 h-fit w-full overflow-hidden px-4 md:bottom-8">
-          <Image
-            ref={refs.titleImage}
-            alt="CRYSTAL VISION"
-            className="h-auto w-full"
-            height={1000}
-            src="/images/hero/title.svg"
-            width={1000}
-          />{' '}
+          <FullWidthTitle ref={refs.titleImage}>CRYSTAL VISION</FullWidthTitle>
         </div>
       </div>
     </Section>

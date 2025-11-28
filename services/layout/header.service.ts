@@ -1,10 +1,6 @@
 import gsap from 'gsap';
 import React from 'react';
 
-export const easing = (t: number): number => {
-  return -(Math.cos(Math.PI * t) - 1) / 2;
-};
-
 export interface HeaderRefs {
   logo: React.RefObject<HTMLAnchorElement | null>;
   linksContainer: React.RefObject<HTMLDivElement | null>;
@@ -31,6 +27,37 @@ export interface HeaderRefs {
     contact: React.RefObject<HTMLAnchorElement | null>;
   };
 }
+
+export type LenisInstance = {
+  scrollTo: (
+    target: string | number | HTMLElement,
+    options?: {
+      duration?: number;
+      lerp?: number;
+      easing?: (t: number) => number;
+      lock?: boolean;
+      offset?: number;
+    },
+  ) => void;
+  stop: () => void;
+  start: () => void;
+};
+
+export const easing = (t: number): number => {
+  return -(Math.cos(Math.PI * t) - 1) / 2;
+};
+
+export const scrollToSection = (lenis: LenisInstance | null | undefined, id: string) => {
+  if (!lenis) return;
+
+  lenis.scrollTo(id, {
+    duration: 1.2,
+    lerp: 0.08,
+    easing,
+    lock: true,
+    offset: -100,
+  });
+};
 
 export const initializeHeaderAnimations = (refs: HeaderRefs) => {
   gsap.set([refs.logo.current, refs.linksContainer.current, refs.cart.current], {
@@ -84,33 +111,6 @@ export const animateHeaderEntry = (refs: HeaderRefs) => {
   return timeline;
 };
 
-export type LenisInstance = {
-  scrollTo: (
-    target: string | number | HTMLElement,
-    options?: {
-      duration?: number;
-      lerp?: number;
-      easing?: (t: number) => number;
-      lock?: boolean;
-      offset?: number;
-    },
-  ) => void;
-  stop: () => void;
-  start: () => void;
-};
-
-export const scrollToSection = (lenis: LenisInstance | null | undefined, id: string) => {
-  if (!lenis) return;
-
-  lenis.scrollTo(id, {
-    duration: 1.2,
-    lerp: 0.08,
-    easing,
-    lock: true,
-    offset: -100,
-  });
-};
-
 export const initializeMobileMenu = (refs: HeaderRefs) => {
   if (!refs.mobileMenu) return;
 
@@ -129,8 +129,7 @@ export const initializeMobileMenu = (refs: HeaderRefs) => {
       refs.mobileMenuLinks.contact.current,
     ],
     {
-      opacity: 0,
-      y: 20,
+      yPercent: 100,
     },
   );
 };
@@ -187,11 +186,10 @@ export const animateMobileMenuOpen = (refs: HeaderRefs) => {
         refs.mobileMenuLinks.contact.current,
       ],
       {
-        opacity: 1,
-        y: 0,
+        yPercent: 0,
         duration: 0.5,
-        stagger: 0.05,
-        ease: 'power2.inOut',
+        stagger: 0.03,
+        ease: 'power2.out',
       },
       '-=0.2',
     );
@@ -199,10 +197,12 @@ export const animateMobileMenuOpen = (refs: HeaderRefs) => {
   return timeline;
 };
 
-export const animateMobileMenuClose = (refs: HeaderRefs) => {
+export const animateMobileMenuClose = (refs: HeaderRefs, onComplete?: () => void) => {
   if (!refs.mobileMenu.current) return;
 
-  const timeline = gsap.timeline();
+  const timeline = gsap.timeline({
+    onComplete,
+  });
 
   timeline.to(
     [
@@ -213,9 +213,8 @@ export const animateMobileMenuClose = (refs: HeaderRefs) => {
       refs.mobileMenuLinks.contact.current,
     ],
     {
-      opacity: 0,
-      y: 20,
-      duration: 0.3,
+      yPercent: 100,
+      duration: 0.5,
       stagger: 0.03,
       ease: 'power2.in',
     },
@@ -267,4 +266,37 @@ export const animateMobileMenuClose = (refs: HeaderRefs) => {
   );
 
   return timeline;
+};
+
+export const toggleMobileMenu = (
+  refs: HeaderRefs,
+  isMobileMenuOpen: boolean,
+  setIsMobileMenuOpen: (isMobileMenuOpen: boolean) => void,
+) => {
+  if (isMobileMenuOpen) {
+    animateMobileMenuClose(refs);
+    setIsMobileMenuOpen(false);
+  } else {
+    setIsMobileMenuOpen(true);
+    animateMobileMenuOpen(refs);
+  }
+};
+
+export const scrollToSectionWithMenuClose = (
+  lenis: LenisInstance | null | undefined,
+  refs: HeaderRefs,
+  isMobileMenuOpen: boolean,
+  setIsMobileMenuOpen: (isMobileMenuOpen: boolean) => void,
+  id: string,
+) => {
+  if (isMobileMenuOpen) {
+    animateMobileMenuClose(refs, () => {
+      setIsMobileMenuOpen(false);
+      requestAnimationFrame(() => {
+        scrollToSection(lenis, id);
+      });
+    });
+  } else {
+    scrollToSection(lenis, id);
+  }
 };

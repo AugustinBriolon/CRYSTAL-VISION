@@ -38,8 +38,7 @@ export const animateAboutEntry = (refs: AboutRefs) => {
   const timeline = gsap.timeline({
     scrollTrigger: {
       trigger: refs.sectionContainer.current,
-      start: isMobile ? 'top 60%' : 'top 80%',
-      end: 'bottom top',
+      start: isMobile ? 'top 60%' : 'top 90%',
     },
   });
 
@@ -54,18 +53,18 @@ export const animateAboutEntry = (refs: AboutRefs) => {
       [splitTitle1Instance.lines, splitTitle2Instance.lines],
       {
         yPercent: 0,
-        duration: 0.6,
+        duration: 0.4,
         stagger: 0.05,
         ease: 'power3.out',
       },
-      '-=0.4',
+      '-=0.6',
     )
     .to(
       splitTextInstance.lines,
       {
         yPercent: 0,
+        duration: 0.6,
         stagger: 0.05,
-        duration: 0.8,
         ease: 'power3.out',
       },
       '-=0.2',

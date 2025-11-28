@@ -12,7 +12,7 @@ interface CatalogCardProps {
 const CatalogCard = forwardRef<HTMLDivElement, CatalogCardProps>(({ img, title, price }, ref) => {
   return (
     <div ref={ref} className="flex shrink-0 flex-col items-center justify-center gap-6 px-4">
-      <div className="bg-gray relative flex h-[400px] w-[300px] items-center justify-center overflow-hidden rounded-2xl md:h-[600px] md:w-[450px]">
+      <div className="bg-gray relative flex h-[400px] w-[300px] items-center justify-center overflow-hidden rounded-2xl md:h-[600px] md:w-[450px] md:max-h-[60vh] md:max-w-[30vw]">
         <Image
           alt={title}
           className="h-full w-full object-cover object-center"
@@ -33,5 +33,7 @@ const CatalogCard = forwardRef<HTMLDivElement, CatalogCardProps>(({ img, title, 
     </div>
   );
 });
+
+CatalogCard.displayName = 'CatalogCard';
 
 export default CatalogCard;

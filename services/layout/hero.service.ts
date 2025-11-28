@@ -10,7 +10,7 @@ export interface HeroRefs {
     third: React.RefObject<HTMLParagraphElement | null>;
     fourth: React.RefObject<HTMLParagraphElement | null>;
   };
-  titleImage: React.RefObject<HTMLImageElement | null>;
+  titleImage: React.RefObject<HTMLDivElement | null>;
 }
 
 export const initializeHeroAnimations = (refs: HeroRefs) => {

@@ -6,7 +6,7 @@ import Icon from './icon';
 interface ButtonProps {
   href?: string;
   icon?: string;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   children: React.ReactNode;
   className?: string;
 }
