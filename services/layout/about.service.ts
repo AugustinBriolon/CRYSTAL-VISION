@@ -17,6 +17,7 @@ export const animateAboutEntry = (refs: AboutRefs) => {
     scaleX: isMobile ? 0 : 0.25,
   });
 
+  if (!refs.title1.current || !refs.title2.current || !refs.description.current) return;
   const splitTitle1Instance = SplitText.create(refs.title1.current, {
     type: 'lines',
     mask: 'lines',
@@ -46,7 +47,7 @@ export const animateAboutEntry = (refs: AboutRefs) => {
     .to(refs.divContainer.current, {
       scaleY: 1,
       scaleX: 1,
-      duration: 1.2,
+      duration: 1,
       ease: 'power4.out',
     })
     .to(
@@ -57,7 +58,7 @@ export const animateAboutEntry = (refs: AboutRefs) => {
         stagger: 0.05,
         ease: 'power3.out',
       },
-      '-=0.6',
+      '-=0.8',
     )
     .to(
       splitTextInstance.lines,

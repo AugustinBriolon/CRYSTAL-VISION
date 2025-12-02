@@ -23,7 +23,7 @@ export interface LimitedEditionRefs {
 
 export const animateLimitedEditionAnimations = (refs: LimitedEditionRefs) => {
   const splitTitle = SplitText.create(refs.title.current, {
-    type: 'lines',
+    type: 'words, lines',
     mask: 'lines',
   });
   const splitCardDescription1 = SplitText.create(refs.cards.card1.description.current, {
@@ -68,25 +68,22 @@ export const animateLimitedEditionAnimations = (refs: LimitedEditionRefs) => {
     yPercent: 100,
   });
 
-  gsap
-    .timeline({
-      scrollTrigger: {
-        trigger: refs.sectionContainer.current,
-        start: 'top 90%',
-      },
-    })
-    .to(refs.divContainer.current, {
-      scaleX: 1,
-      yPercent: 0,
-      duration: 1,
-      ease: 'power4.out',
-    });
+  gsap.to(refs.divContainer.current, {
+    scrollTrigger: {
+      trigger: refs.sectionContainer.current,
+      start: 'top 90%',
+    },
+    scaleX: 1,
+    yPercent: 0,
+    duration: 1,
+    ease: 'power4.out',
+  });
 
   gsap
     .timeline({
       scrollTrigger: {
         trigger: refs.sectionContainer.current,
-        start: 'top 60%',
+        start: 'top 70%',
       },
     })
     .to(splitTitle.lines, {

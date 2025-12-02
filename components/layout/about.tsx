@@ -15,7 +15,7 @@ export default function About() {
   };
 
   useGSAP(() => {
-    if (isFontReady) return;
+    if (!isFontReady) return;
     animateAboutEntry(refs);
   }, [isFontReady]);
 
@@ -30,11 +30,11 @@ export default function About() {
         ref={refs.divContainer}
         className="flex h-full w-full origin-center flex-col items-center justify-center gap-8 rounded-4xl bg-black px-8 py-12 md:gap-16 md:py-24"
       >
-        <div className="flex flex-col items-center justify-center gap-2">
-          <h2 ref={refs.title1} className="text-center text-pretty">
+        <div className="flex w-full flex-col items-center justify-center gap-2">
+          <h2 ref={refs.title1} className="w-full text-center">
             IT'S NOT JUST AN ACCESSORY.
           </h2>
-          <h2 ref={refs.title2} className="text-center text-pretty">
+          <h2 ref={refs.title2} className="w-full text-center">
             IT'S PART OF YOUR IMAGE.
           </h2>
         </div>

@@ -51,7 +51,7 @@ export default function Hero() {
           <div ref={refs.image} className="relative h-full overflow-hidden rounded-4xl">
             <Image
               alt="Hero Image"
-              className="h-full w-auto object-cover md:h-full xl:max-w-[25vw]"
+              className="h-full w-auto object-cover md:h-full xl:max-w-[25vw] max-h-[60vh]"
               height={1000}
               src="/images/hero/img1.webp"
               width={1000}

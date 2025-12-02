@@ -115,16 +115,6 @@ const Header = () => {
               Influencer
             </Link>
           </div>
-          <div className="overflow-hidden">
-            <Link
-              ref={refs.mobileMenuLinks.contact}
-              className="block cursor-pointer text-4xl font-medium text-black uppercase"
-              href="#contact"
-              onClick={(e) => scrollTo(e, '#contact')}
-            >
-              Contact
-            </Link>
-          </div>
         </div>
       </div>
 
@@ -198,16 +188,6 @@ const Header = () => {
               onClick={(e) => scrollTo(e, '#influencer')}
             >
               Influencer
-            </Link>
-          </div>
-          <div className="overflow-hidden">
-            <Link
-              ref={refs.links.contact}
-              className="block cursor-pointer font-medium"
-              href="#contact"
-              onClick={(e) => scrollTo(e, '#contact')}
-            >
-              Contact
             </Link>
           </div>
         </div>

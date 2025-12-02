@@ -3,33 +3,34 @@ import gsap from 'gsap';
 export const influencerCards = [
   {
     name: 'Mike',
-    role: 'Developer',
-    quote: 'A must-have for anyone looking to save time and boost productivity.',
+    role: 'Fashion Creator',
+    quote: 'Sharp design and premium build. These shades instantly elevate every shoot I’m on.',
   },
   {
     name: 'Jenna',
-    role: 'Developer',
-    quote: 'Exceptional service with top-notch features. Love it!',
+    role: 'Lifestyle Influencer',
+    quote: 'Featherlight and super photogenic. They add an instant premium vibe to all my content.',
   },
   {
     name: 'Sarah',
-    role: 'Developer',
-    quote: 'This tech has completely streamlined my daily tasks.',
+    role: 'Art Director',
+    quote:
+      'The lens color calibration is spot-on. Everything looks crisp without oversaturating tones.',
   },
   {
     name: 'Ravi',
-    role: 'Developer',
-    quote: 'Innovative and powerful, yet so easy to use!',
+    role: 'Travel Photographer',
+    quote: 'Comfortable, durable, and stylish. They perform flawlessly in harsh sunlight.',
   },
   {
     name: 'Lucas',
-    role: 'Developer',
-    quote: 'It makes everything so much easier. Highly recommend!',
+    role: 'Streetwear Curator',
+    quote: 'Modern without trying too hard. They fit perfectly with my minimalist outfits.',
   },
   {
     name: 'Kim',
-    role: 'Developer',
-    quote: 'Fast, reliable, and user-friendly. Exactly what I needed.',
+    role: 'Outdoor Athlete',
+    quote: 'Lightweight, stable, and zero distracting glare. Ideal for my long sunny runs.',
   },
 ];
 

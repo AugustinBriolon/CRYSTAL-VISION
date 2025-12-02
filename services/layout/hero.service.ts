@@ -36,7 +36,7 @@ export const animateHeroEntry = (refs: HeroRefs) => {
     .to(refs.container.current, {
       yPercent: 0,
       scale: 1,
-      duration: 2.2,
+      duration: 1.8,
       ease: 'power4.out',
     })
     .to(
@@ -47,7 +47,7 @@ export const animateHeroEntry = (refs: HeroRefs) => {
         duration: 0.8,
         ease: 'power3.inOut',
       },
-      '-=0.8',
+      '-=1.2',
     )
     .to(
       refs.title.current,

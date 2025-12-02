@@ -31,7 +31,7 @@ export default function LimitedEdition() {
   };
 
   useGSAP(() => {
-    if (isFontReady) return;
+    if (!isFontReady) return;
     animateLimitedEditionAnimations(refs);
   }, [isFontReady]);
 
@@ -43,7 +43,7 @@ export default function LimitedEdition() {
       id="limited-edition"
     >
       <div ref={refs.divContainer} className="flex h-full w-full flex-col rounded-4xl bg-black p-8">
-        <h2 ref={refs.title} className="w-full text-balance md:w-3/4">
+        <h2 ref={refs.title} className="w-full md:w-3/4">
           EXCLUSIVE DESIGNS CRAFTED IN LIMITED EDITIONS, COMBINING LUXURY, COMFORT, AND
           INDIVIDUALITY
         </h2>

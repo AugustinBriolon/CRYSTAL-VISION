@@ -10,8 +10,9 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { ReactNode, useEffect, useRef } from 'react';
+import { CSSPlugin } from 'gsap/CSSPlugin';
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger, SplitText, CSSPlugin);
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { isProd } = useEnvironment();
