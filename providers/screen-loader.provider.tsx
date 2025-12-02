@@ -8,7 +8,7 @@ interface ScreenLoaderContextType {
 const ScreenLoaderContext = createContext<ScreenLoaderContextType | null>(null);
 
 export const ScreenLoaderProvider = ({ children }: { children: ReactNode }) => {
-  const [isComplete, setIsComplete] = useState(true);
+  const [isComplete, setIsComplete] = useState(false);
 
   const value = useMemo(
     () => ({

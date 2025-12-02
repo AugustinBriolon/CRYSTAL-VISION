@@ -56,6 +56,7 @@ export default function LimitedEdition() {
               height={847}
               src="/images/influencer/img1.webp"
               width={640}
+              loading="lazy"
             />
             <p ref={refs.cards.card1.description} className="h-12 text-left font-medium text-white">
               International quality standards.
@@ -69,6 +70,7 @@ export default function LimitedEdition() {
               height={1200}
               src="/images/influencer/img2.webp"
               width={904}
+              loading="lazy"
             />
             <p ref={refs.cards.card2.description} className="h-12 text-left font-medium text-white">
               Eyewear that blends timeless aesthetics with modern innovation.
@@ -82,6 +84,7 @@ export default function LimitedEdition() {
               height={1024}
               src="/images/influencer/img3.webp"
               width={682}
+              loading="lazy"
             />
             <p ref={refs.cards.card3.description} className="text-left font-medium text-white">
               Handcrafted frames made from premium materials with exceptional attention to detail.

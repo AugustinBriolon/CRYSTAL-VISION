@@ -10,9 +10,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { ReactNode, useEffect, useRef } from 'react';
-import { CSSPlugin } from 'gsap/CSSPlugin';
 
-gsap.registerPlugin(ScrollTrigger, SplitText, CSSPlugin);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { isProd } = useEnvironment();
@@ -36,7 +35,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <SEO />
 
       {isLoading || !isFontReady ? (
-        <div className="bg-blue fixed inset-0 z-9998" />
+        <div className="bg-blue fixed inset-0 z-40" />
       ) : (
         <>
           <Header />

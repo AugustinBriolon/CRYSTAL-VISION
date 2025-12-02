@@ -151,6 +151,7 @@ export const animateMobileMenuOpen = (refs: HeaderRefs) => {
       refs.menuLine.line1.current,
       {
         y: 7,
+        scale: 1.3,
         rotate: 45,
         duration: 0.3,
         ease: 'power2.inOut',
@@ -171,6 +172,7 @@ export const animateMobileMenuOpen = (refs: HeaderRefs) => {
       refs.menuLine.line3.current,
       {
         y: -9,
+        scale: 1.3,
         rotate: -45,
         duration: 0.3,
         ease: 'power2.inOut',
@@ -224,6 +226,7 @@ export const animateMobileMenuClose = (refs: HeaderRefs, onComplete?: () => void
     refs.menuLine.line1.current,
     {
       y: 0,
+      scale: 1,
       rotate: 0,
       duration: 0.3,
       ease: 'power2.inOut',
@@ -235,6 +238,7 @@ export const animateMobileMenuClose = (refs: HeaderRefs, onComplete?: () => void
     refs.menuLine.line3.current,
     {
       y: 0,
+      scale: 1,
       rotate: 0,
       duration: 0.3,
       ease: 'power2.inOut',

@@ -37,7 +37,7 @@ export default function Hero() {
   return (
     <Section
       ref={refs.container}
-      className="h-fit min-h-fit rounded-t-4xl md:h-dvh md:min-h-dvh"
+      className="z-60 h-fit min-h-fit rounded-t-4xl md:h-dvh md:min-h-dvh"
       color="white"
       id="hero"
     >
@@ -51,10 +51,12 @@ export default function Hero() {
           <div ref={refs.image} className="relative h-full overflow-hidden rounded-4xl">
             <Image
               alt="Hero Image"
-              className="h-full w-auto object-cover md:h-full xl:max-w-[25vw] max-h-[60vh]"
+              className="h-full max-h-[60vh] w-auto object-cover md:h-full xl:max-w-[25vw]"
               height={1000}
+              loading="eager"
               src="/images/hero/img1.webp"
               width={1000}
+              preload
             />
             <div className="absolute right-0 bottom-4 w-full px-4">
               <Button className="bg-orange w-full justify-center px-6 py-3 text-xs font-medium whitespace-nowrap text-white md:text-base">
