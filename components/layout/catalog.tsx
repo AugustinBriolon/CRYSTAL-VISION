@@ -28,7 +28,10 @@ export default function Catalog() {
 
   return (
     <Section ref={refs.sectionContainer} className="h-auto! py-8" id="catalog">
-      <div ref={refs.divContainer} className="relative h-full w-full overflow-hidden">
+      <div
+        ref={refs.divContainer}
+        className="relative h-full w-full overflow-hidden before-after-blur"
+      >
         <div ref={refs.cardsContainer} className="flex h-full items-start justify-start gap-0">
           {catalogItems.map((item) => (
             <CatalogCard

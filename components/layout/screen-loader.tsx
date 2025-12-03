@@ -2,17 +2,18 @@ import { usePerformance } from '@/providers/performance.provider';
 import { useScreenLoader } from '@/providers/screen-loader.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { useEffect, useRef, useState } from 'react';
+import { useLenis } from 'lenis/react';
+import { useRef, useState } from 'react';
 
 const ScreenLoader = () => {
   const screenLoaderRef = useRef(null);
+  const { contextSafe } = useGSAP();
+  const lenis = useLenis();
+  const { isLoading } = usePerformance();
+  const { setIsComplete } = useScreenLoader();
   const counterRef = useRef(null);
   const [counter, setCounter] = useState(0);
   const [counterComplete, setCounterComplete] = useState(false);
-  const { isLoading } = usePerformance();
-  const { setIsComplete } = useScreenLoader();
-
-  const { contextSafe } = useGSAP();
 
   const hideAnimation = contextSafe(() => {
     gsap.to(counterRef.current, {
@@ -24,6 +25,7 @@ const ScreenLoader = () => {
           gsap.set(screenLoaderRef.current, { display: 'none' });
         }
         setIsComplete(true);
+        lenis?.start();
       },
     });
   });
@@ -31,6 +33,7 @@ const ScreenLoader = () => {
   const revealAnimation = contextSafe(() => {
     gsap.set(counterRef.current, {
       top: 'calc(100% - 100px)',
+      opacity: 1,
     });
 
     const timeline = gsap.timeline();
@@ -52,20 +55,17 @@ const ScreenLoader = () => {
         },
         onComplete: () => {
           setCounterComplete(true);
+          hideAnimation();
         },
       },
     );
   });
 
   useGSAP(() => {
+    if (!lenis) return;
+    lenis.stop();
     revealAnimation();
-  }, []);
-
-  useEffect(() => {
-    if (counterComplete && !isLoading) {
-      hideAnimation();
-    }
-  }, [counterComplete, isLoading]);
+  }, [lenis]);
 
   return (
     <div
@@ -74,7 +74,7 @@ const ScreenLoader = () => {
     >
       <h1
         ref={counterRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-8xl font-bold text-white"
+        className="opacity-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-8xl font-bold text-white"
       >
         {counter}
       </h1>

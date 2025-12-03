@@ -14,31 +14,31 @@ export const catalogItems: CatalogItem[] = [
     id: 2,
     img: '/images/catalog/sunglass2.webp',
     title: 'Futuristic Vision',
-    price: 420,
+    price: 540,
   },
   {
     id: 3,
     img: '/images/catalog/sunglass3.webp',
     title: 'Aviator Oversized Vision',
-    price: 420,
+    price: 310,
   },
   {
     id: 4,
     img: '/images/catalog/sunglass4.webp',
     title: 'Techno Vision',
-    price: 420,
+    price: 650,
   },
   {
     id: 5,
     img: '/images/catalog/sunglass5.webp',
     title: 'Parisian Vision',
-    price: 420,
+    price: 380,
   },
   {
     id: 6,
     img: '/images/catalog/sunglass6.webp',
     title: 'Matrix Vision',
-    price: 420,
+    price: 290,
   },
 ];
 

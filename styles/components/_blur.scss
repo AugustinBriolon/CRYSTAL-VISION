@@ -40,3 +40,53 @@
   mask: linear-gradient(rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 30%);
   -webkit-mask: linear-gradient(rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 30%);
 }
+
+.before-after-blur::before {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 100%;
+  backdrop-filter: blur(8px);
+  // -webkit-backdrop-filter: blur(8px);
+  content: '';
+  mask: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.8) 30%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.8) 30%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.before-after-blur::after {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 100%;
+  backdrop-filter: blur(8px);
+  // -webkit-backdrop-filter: blur(8px);
+  content: '';
+  mask: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.8) 30%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.8) 30%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+}
