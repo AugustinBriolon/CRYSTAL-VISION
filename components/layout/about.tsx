@@ -9,7 +9,7 @@ export default function About() {
     divContainer: useRef<HTMLDivElement>(null),
     title1: useRef<HTMLHeadingElement>(null),
     title2: useRef<HTMLHeadingElement>(null),
-    description: useRef<HTMLParagraphElement>(null),
+    description: useRef<HTMLDivElement>(null),
   };
 
   useGSAP(() => {
@@ -35,15 +35,15 @@ export default function About() {
             IT'S PART OF YOUR IMAGE.
           </h2>
         </div>
-        <p
+        <div
           ref={refs.description}
-          aria-label="About the brand"
+          aria-hidden="true"
           className="text-center text-balance text-white md:max-w-1/2"
         >
           Our brand was born from the idea of combining aesthetics, comfort, and modern design. Each
           pair of glasses is the result of meticulous work by designers and craftsmen who believe
           that details define personality.
-        </p>
+        </div>
       </div>
     </Section>
   );

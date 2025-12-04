@@ -57,7 +57,7 @@ export default function LimitedEdition() {
             />
             <p
               ref={refs.cards.card1.description}
-              aria-label="Limited Edition 1"
+              aria-hidden="true"
               className="h-12 text-left font-medium text-white"
             >
               International quality standards.
@@ -75,7 +75,7 @@ export default function LimitedEdition() {
             />
             <p
               ref={refs.cards.card2.description}
-              aria-label="Limited Edition 2"
+              aria-hidden="true"
               className="h-12 text-left font-medium text-white"
             >
               Eyewear that blends timeless aesthetics with modern innovation.
@@ -93,7 +93,7 @@ export default function LimitedEdition() {
             />
             <p
               ref={refs.cards.card3.description}
-              aria-label="Limited Edition 3"
+              aria-hidden="true"
               className="text-left font-medium text-white"
             >
               Handcrafted frames made from premium materials with exceptional attention to detail.
