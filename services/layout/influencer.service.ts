@@ -49,6 +49,19 @@ const getCards = (refs: InfluencerRefs): HTMLDivElement[] =>
     .map((card) => card.current)
     .filter((card): card is HTMLDivElement => card !== null);
 
+export const animateInfluencerAnimations = (refs: InfluencerRefs) => {
+  gsap.set([refs.title.one.current, refs.title.two.current], { yPercent: 100 });
+  const cards = getCards(refs);
+
+  cards.forEach((card) => {
+    gsap.set(card, {
+      xPercent: (Math.random() - 0.5) * 10,
+      yPercent: (Math.random() - 0.5) * 10,
+      rotation: (Math.random() - 0.5) * 20,
+    });
+  });
+};
+
 export const animateInfluencerEntry = (refs: InfluencerRefs) => {
   gsap
     .timeline({
@@ -66,30 +79,14 @@ export const animateInfluencerEntry = (refs: InfluencerRefs) => {
     .from(
       getCards(refs),
       {
-        opacity: 0,
-        scale: 0.9,
-        yPercent: 25,
+        scale: 0,
+        yPercent: 100,
         stagger: 0.02,
         duration: 0.8,
-        ease: 'power4.out',
+        ease: 'power3.out',
       },
-      '-=0.4',
+      '-=0.2',
     );
-};
-
-export const animateInfluencerAnimations = (refs: InfluencerRefs) => {
-  gsap.set([refs.title.one.current, refs.title.two.current], { yPercent: 100 });
-  const cards = getCards(refs);
-
-  cards.forEach((cardRef) => {
-    const card = cardRef;
-    if (!card) return;
-    gsap.set(card, {
-      xPercent: (Math.random() - 0.5) * 10,
-      yPercent: (Math.random() - 0.5) * 10,
-      rotation: (Math.random() - 0.5) * 20,
-    });
-  });
 };
 
 let currentPortion = 0;

@@ -15,7 +15,7 @@ const Section = forwardRef<
         className,
       )}
     >
-      <div className="mx-auto h-fit max-w-screen-xl">{children}</div>
+      <div className="mx-auto h-full max-w-screen-xl">{children}</div>
     </section>
   );
 });

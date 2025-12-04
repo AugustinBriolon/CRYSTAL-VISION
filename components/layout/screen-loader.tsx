@@ -2,18 +2,16 @@ import { usePerformance } from '@/providers/performance.provider';
 import { useScreenLoader } from '@/providers/screen-loader.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { useLenis } from 'lenis/react';
 import { useRef, useState } from 'react';
 
 const ScreenLoader = () => {
   const screenLoaderRef = useRef(null);
+  const counterRef = useRef(null);
+  const [counterComplete, setCounterComplete] = useState(false);
+  const [counter, setCounter] = useState(0);
   const { contextSafe } = useGSAP();
-  const lenis = useLenis();
   const { isLoading } = usePerformance();
   const { setIsComplete } = useScreenLoader();
-  const counterRef = useRef(null);
-  const [counter, setCounter] = useState(0);
-  const [counterComplete, setCounterComplete] = useState(false);
 
   const hideAnimation = contextSafe(() => {
     gsap.to(counterRef.current, {
@@ -25,7 +23,6 @@ const ScreenLoader = () => {
           gsap.set(screenLoaderRef.current, { display: 'none' });
         }
         setIsComplete(true);
-        lenis?.start();
       },
     });
   });
@@ -62,10 +59,8 @@ const ScreenLoader = () => {
   });
 
   useGSAP(() => {
-    if (!lenis) return;
-    lenis.stop();
     revealAnimation();
-  }, [lenis]);
+  }, []);
 
   return (
     <div
@@ -74,7 +69,7 @@ const ScreenLoader = () => {
     >
       <h1
         ref={counterRef}
-        className="opacity-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-8xl font-bold text-white"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-8xl font-bold text-white opacity-0"
       >
         {counter}
       </h1>

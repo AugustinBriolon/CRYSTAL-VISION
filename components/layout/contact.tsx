@@ -1,12 +1,11 @@
-import { useFontReady } from '@/hooks/useFontReady';
-import Section from '../shared/sections';
-import { Button } from '../ui/button';
-import { useRef } from 'react';
 import { animateContactAnimations, ContactRefs } from '@/services/layout/contact.service';
 import { useGSAP } from '@gsap/react';
+import { useRef } from 'react';
+import Section from '../shared/sections';
+import { Button } from '../ui/button';
 
 export default function Contact() {
-  const isFontReady = useFontReady();
+
 
   const refs: ContactRefs = {
     sectionContainer: useRef<HTMLDivElement>(null),
@@ -15,9 +14,8 @@ export default function Contact() {
   };
 
   useGSAP(() => {
-    if (!isFontReady) return;
     animateContactAnimations(refs);
-  }, [isFontReady]);
+  }, []);
 
   return (
     <Section

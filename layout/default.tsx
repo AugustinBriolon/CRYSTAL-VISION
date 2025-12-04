@@ -5,7 +5,9 @@ import PerformanceIndicator from '@/components/ui/performance-indicator';
 import SEO from '@/components/ui/SEO';
 import { useEnvironment } from '@/hooks/useEnvironment';
 import { useFontReady } from '@/hooks/useFontReady';
+import { useScroll } from '@/hooks/useScroll';
 import { usePerformance } from '@/providers/performance.provider';
+import { useScreenLoader } from '@/providers/screen-loader.provider';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
@@ -14,20 +16,29 @@ import { ReactNode, useEffect, useRef } from 'react';
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const { isProd } = useEnvironment();
+  const hasRefreshedRef = useRef(false);
+  const { isDev } = useEnvironment();
   const { isLoading } = usePerformance();
   const isFontReady = useFontReady();
-  const hasRefreshedRef = useRef(false);
+  const { isComplete } = useScreenLoader();
+  const { lockScroll } = useScroll();
 
   useEffect(() => {
     if (!isLoading && !hasRefreshedRef.current) {
       hasRefreshedRef.current = true;
-
       requestAnimationFrame(() => {
         ScrollTrigger.refresh();
       });
     }
   }, [isLoading]);
+
+  useEffect(() => {
+    if (isComplete) {
+      lockScroll(false);
+    } else {
+      lockScroll(true);
+    }
+  }, [isComplete, lockScroll]);
 
   return (
     <>
@@ -44,7 +55,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         </>
       )}
 
-      {!isProd && <PerformanceIndicator />}
+      {isDev && <PerformanceIndicator />}
     </>
   );
 };

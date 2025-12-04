@@ -22,7 +22,7 @@ export default function Influencer() {
       two: useRef<HTMLDivElement>(null),
     },
     cardsContainer: useRef<HTMLDivElement>(null),
-    cards: Array.from({ length: 6 }, () => useRef<HTMLDivElement>(null)),
+    cards: Array.from({ length: influencerCards.length }, () => useRef<HTMLDivElement>(null)),
   };
 
   useGSAP(() => {

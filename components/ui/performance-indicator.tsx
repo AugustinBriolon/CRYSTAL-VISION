@@ -1,12 +1,13 @@
 import useClearSiteData from '@/hooks/useClearSiteData';
-import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
+import { PERFORMANCE_LEVEL, STORAGE_KEY } from '@/hooks/usePerformance';
+import { useTouchDevice } from '@/hooks/useTouchDevice';
 import { usePerformance } from '@/providers/performance.provider';
 import clsx from 'clsx';
 import { useState, useEffect } from 'react';
 
 const getTimeRemaining = () => {
   try {
-    const cached = localStorage.getItem('paranthese_performance_metrics');
+    const cached = localStorage.getItem(STORAGE_KEY);
     if (!cached) return 'no cache';
 
     const parsed = JSON.parse(cached);
@@ -24,7 +25,10 @@ const getTimeRemaining = () => {
 };
 
 const PerformanceIndicator = () => {
-  const { performanceLevel, executionTime, score, isLoading } = usePerformance();
+  const { performanceLevel, executionTime, score, isLoading, os, osVersion, isOldOS } =
+    usePerformance();
+  const isTouchDevice = useTouchDevice();
+
   const { clearSiteData } = useClearSiteData();
   const [isHovered, setIsHovered] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState<string>('--');
@@ -32,7 +36,6 @@ const PerformanceIndicator = () => {
   useEffect(() => {
     setTimeRemaining(getTimeRemaining());
 
-    // Update every minute
     const interval = setInterval(() => {
       setTimeRemaining(getTimeRemaining());
     }, 60000);
@@ -51,7 +54,7 @@ const PerformanceIndicator = () => {
   };
 
   return (
-    <div className="fixed bottom-4 left-1/2 z-999 -translate-x-1/2">
+    <div className="fixed bottom-4 left-1/2 z-9999 -translate-x-1/2">
       <div
         className={clsx(
           'absolute right-1/2 bottom-full mb-2 w-64 origin-bottom translate-x-1/2 rounded-lg border border-slate-400/30 bg-slate-900/95 p-3 text-sm shadow-xl backdrop-blur-xl transition-[opacity,scale]',
@@ -66,7 +69,6 @@ const PerformanceIndicator = () => {
             className={clsx(
               'rounded-full px-2 py-0.5 text-xs font-bold',
               performanceLevel === PERFORMANCE_LEVEL.HIGH && 'bg-green-500/20 text-green-400',
-              performanceLevel === PERFORMANCE_LEVEL.MEDIUM && 'bg-yellow-500/20 text-yellow-400',
               performanceLevel === PERFORMANCE_LEVEL.LOW && 'bg-red-500/20 text-red-400',
             )}
           >
@@ -74,14 +76,25 @@ const PerformanceIndicator = () => {
           </div>
         </div>
         <div className="space-y-1.5 text-slate-300">
-          <div className="flex justify-between">
-            <span className="text-slate-400">Animation Time:</span>
-            <span className="font-mono font-semibold">{executionTime.toFixed(0)}ms</span>
-          </div>
+          {executionTime !== 0 && (
+            <div className="flex justify-between">
+              <span className="text-slate-400">Animation Time:</span>
+              <span className="font-mono font-semibold">{executionTime.toFixed(0)}ms</span>
+            </div>
+          )}
           <div className="flex justify-between">
             <span className="text-slate-400">Score:</span>
             <span className="font-mono font-semibold">{score}/100</span>
           </div>
+          {os && (
+            <div className="flex justify-between">
+              <span className="text-slate-400">OS:</span>
+              <span className="font-mono text-xs font-semibold text-slate-200">
+                {os}
+                {osVersion ? ` ${osVersion}` : ' (unknown version)'}
+              </span>
+            </div>
+          )}
           <div className="flex justify-between">
             <span className="text-slate-400">Cache expires in:</span>
             <span className="font-mono text-xs text-slate-400">{timeRemaining}</span>
@@ -96,8 +109,8 @@ const PerformanceIndicator = () => {
       </div>
 
       <button
-        className="flex cursor-pointer items-center gap-2 rounded-full border border-slate-400/30 bg-black px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl transition-all hover:scale-105"
-        onClick={handleClick}
+        className="flex cursor-pointer items-center gap-2 rounded-full border border-slate-400/30 bg-slate-300/30 px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl transition-all hover:scale-105"
+        onClick={isTouchDevice ? undefined : handleClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -105,11 +118,12 @@ const PerformanceIndicator = () => {
           className={clsx(
             'flex h-2 w-2 items-center gap-2 rounded-full',
             performanceLevel === PERFORMANCE_LEVEL.HIGH && 'bg-green-500',
-            performanceLevel === PERFORMANCE_LEVEL.MEDIUM && 'bg-yellow-500',
             performanceLevel === PERFORMANCE_LEVEL.LOW && 'bg-red-500',
           )}
         />
-        <div className="text-xs opacity-75">{executionTime.toFixed(0)}ms</div>
+        <div className="text-xs opacity-75">
+          {isOldOS ? 'Old OS' : executionTime.toFixed(0) + 'ms'}
+        </div>
       </button>
     </div>
   );

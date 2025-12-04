@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
+import { getOSInfo, OS } from '@/utils/os.utils';
 
 export enum PERFORMANCE_LEVEL {
   HIGH = 'high',
-  MEDIUM = 'medium',
   LOW = 'low',
 }
 
@@ -11,27 +11,20 @@ interface PerformanceMetrics {
   executionTime: number;
   isLoading: boolean;
   score: number;
+  os: OS | null;
+  osVersion: number | null;
+  isOldOS: boolean;
 }
 
-const PERFORMANCE_LEVEL_VALUES = {
-  [PERFORMANCE_LEVEL.LOW]: 1,
-  [PERFORMANCE_LEVEL.MEDIUM]: 2,
-  [PERFORMANCE_LEVEL.HIGH]: 3,
-} as const;
-
 interface PerformanceUtils {
-  isAtLeast: (level: PERFORMANCE_LEVEL) => boolean;
-  isAtMost: (level: PERFORMANCE_LEVEL) => boolean;
-  isExactly: (level: PERFORMANCE_LEVEL) => boolean;
   getConditionalProps: <T>(props: Record<PERFORMANCE_LEVEL, T>) => T | undefined;
 }
 
-const STORAGE_KEY = 'paranthese_performance_metrics';
-const CACHE_DURATION = 30 * 60 * 1000;
+export const STORAGE_KEY = 'apax-performance-metrics';
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
-const THRESHOLDS = {
-  ANIMATION_HIGH: 500,
-  ANIMATION_MEDIUM: 850,
+const THRESHOLD = {
+  ANIMATION_HIGH: 400, // ms
 } as const;
 
 interface CachedMetrics {
@@ -39,27 +32,21 @@ interface CachedMetrics {
   executionTime: number;
   score: number;
   timestamp: number;
+  os?: OS | null;
+  osVersion?: number | null;
+  isOldOS?: boolean;
 }
 
 const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
-    performanceLevel: PERFORMANCE_LEVEL.HIGH,
+    performanceLevel: PERFORMANCE_LEVEL.LOW,
     executionTime: 0,
     score: 0,
     isLoading: true,
+    os: null,
+    osVersion: null,
+    isOldOS: false,
   });
-
-  const isAtLeast = (level: PERFORMANCE_LEVEL): boolean => {
-    return PERFORMANCE_LEVEL_VALUES[metrics.performanceLevel] >= PERFORMANCE_LEVEL_VALUES[level];
-  };
-
-  const isAtMost = (level: PERFORMANCE_LEVEL): boolean => {
-    return PERFORMANCE_LEVEL_VALUES[metrics.performanceLevel] <= PERFORMANCE_LEVEL_VALUES[level];
-  };
-
-  const isExactly = (level: PERFORMANCE_LEVEL): boolean => {
-    return metrics.performanceLevel === level;
-  };
 
   const getConditionalProps = <T>(props: Record<PERFORMANCE_LEVEL, T>): T | undefined => {
     return props[metrics.performanceLevel];
@@ -68,6 +55,75 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const detectPerformance = async () => {
+        // Vérification OS anciens
+        const osInfo = getOSInfo();
+
+        if (osInfo.os === 'ios' && osInfo.version !== null && osInfo.version < 16) {
+          console.info(
+            `🍎 iOS ${osInfo.version} detected (< 16), forcing LOW performance level (no test)`,
+          );
+          setMetrics({
+            performanceLevel: PERFORMANCE_LEVEL.LOW,
+            executionTime: 0,
+            score: 10,
+            isLoading: false,
+            os: osInfo.os,
+            osVersion: osInfo.version,
+            isOldOS: true,
+          });
+          return;
+        }
+
+        if (osInfo.os === 'android' && osInfo.version !== null && osInfo.version < 10) {
+          console.info(
+            `🤖 Android ${osInfo.version} detected (< 10), forcing LOW performance level (no test)`,
+          );
+          setMetrics({
+            performanceLevel: PERFORMANCE_LEVEL.LOW,
+            executionTime: 0,
+            score: 10,
+            isLoading: false,
+            os: osInfo.os,
+            osVersion: osInfo.version,
+            isOldOS: true,
+          });
+          return;
+        }
+
+        if (osInfo.os === 'windows' && osInfo.version !== null && osInfo.version < 10) {
+          console.info(
+            `🪟 Windows ${osInfo.version} detected (< 10), forcing LOW performance level (no test)`,
+          );
+          setMetrics({
+            performanceLevel: PERFORMANCE_LEVEL.LOW,
+            executionTime: 0,
+            score: 10,
+            isLoading: false,
+            os: osInfo.os,
+            osVersion: osInfo.version,
+            isOldOS: true,
+          });
+          return;
+        }
+
+        // Pour macOS, on force LOW seulement si on détecte explicitement une version < 11
+        // Si version === null, on assume que c'est une version récente (>= 11) et on continue
+        if (osInfo.os === 'macos' && osInfo.version !== null && osInfo.version < 11) {
+          console.info(
+            `🍎 macOS ${osInfo.version} detected (< 11), forcing LOW performance level (no test)`,
+          );
+          setMetrics({
+            performanceLevel: PERFORMANCE_LEVEL.LOW,
+            executionTime: 0,
+            score: 10,
+            isLoading: false,
+            os: osInfo.os,
+            osVersion: osInfo.version,
+            isOldOS: true,
+          });
+          return;
+        }
+
         const getCachedMetrics = (): CachedMetrics | null => {
           try {
             const cached = localStorage.getItem(STORAGE_KEY);
@@ -88,15 +144,20 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
         if (cachedMetrics) {
           const cacheAge = Math.round((Date.now() - cachedMetrics.timestamp) / 60000);
           console.info(`✅ Using cached performance metrics (${cacheAge}min old, valid for 30min)`);
+          const currentOSInfo = getOSInfo();
           setMetrics({
             performanceLevel: cachedMetrics.performanceLevel,
             executionTime: cachedMetrics.executionTime,
             score: cachedMetrics.score,
             isLoading: false,
+            os: cachedMetrics.os ?? currentOSInfo.os,
+            osVersion: cachedMetrics.osVersion ?? currentOSInfo.version,
+            isOldOS: cachedMetrics.isOldOS ?? false,
           });
           return;
         }
 
+        // Pas de cache valide, on lance le test
         console.info('🎯 Running performance test (no valid cache)...');
 
         const waitForStableState = async (): Promise<void> => {
@@ -248,35 +309,23 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
         }
 
         // Calcul du score d'animation (0-100) - basé UNIQUEMENT sur le temps d'exécution
-        // Calibré pour le test ultra-rapide (1 élément, 20 frames)
-        // Aucune dépendance au hardware - fonctionne sur tous les devices
         let animationScore = 100;
         if (isTimeout || executionTime > 1200) {
-          // Timeout ou > 1200ms = très faible
           animationScore = 10;
-        } else if (executionTime > THRESHOLDS.ANIMATION_MEDIUM) {
-          // Au-dessus de 850ms = machines anciennes/faibles
+        } else if (executionTime > THRESHOLD.ANIMATION_HIGH) {
           animationScore = 30;
-        } else if (executionTime > THRESHOLDS.ANIMATION_HIGH) {
-          // Entre 500ms et 850ms = machines moyennes
-          animationScore = 60;
-        } else if (executionTime > 350) {
-          // Entre 350ms et 500ms = machines performantes
-          animationScore = 85;
         } else {
-          // Moins de 350ms = machines ultra-performantes
           animationScore = 100;
         }
 
         // Détermine le niveau de performance basé UNIQUEMENT sur le temps d'animation
-        let performanceLevel: PERFORMANCE_LEVEL;
-        if (executionTime <= THRESHOLDS.ANIMATION_HIGH) {
-          performanceLevel = PERFORMANCE_LEVEL.HIGH;
-        } else if (executionTime <= THRESHOLDS.ANIMATION_MEDIUM) {
-          performanceLevel = PERFORMANCE_LEVEL.MEDIUM;
-        } else {
-          performanceLevel = PERFORMANCE_LEVEL.LOW;
-        }
+        const performanceLevel: PERFORMANCE_LEVEL =
+          executionTime <= THRESHOLD.ANIMATION_HIGH
+            ? PERFORMANCE_LEVEL.HIGH
+            : PERFORMANCE_LEVEL.LOW;
+
+        // Si LOW, ce n'est pas à cause d'un OS ancien (on a déjà vérifié avant)
+        const isOldOS = false;
 
         // Log détaillé des métriques - basé uniquement sur l'animation
         console.info('🎯 Performance Detection Complete');
@@ -288,12 +337,16 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
         });
 
         // Mise en cache pour 30 minutes
+        const currentOSInfo = getOSInfo();
         try {
           const cacheData: CachedMetrics = {
             performanceLevel,
             executionTime,
             score: animationScore,
             timestamp: Date.now(),
+            os: currentOSInfo.os,
+            osVersion: currentOSInfo.version,
+            isOldOS,
           };
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheData));
           console.info('💾 Performance metrics cached for 30 minutes');
@@ -307,6 +360,9 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           executionTime,
           score: animationScore,
           isLoading: false,
+          os: currentOSInfo.os,
+          osVersion: currentOSInfo.version,
+          isOldOS,
         });
       };
 
@@ -314,7 +370,7 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
     }
   }, []);
 
-  return { ...metrics, isAtLeast, isAtMost, isExactly, getConditionalProps };
+  return { ...metrics, getConditionalProps };
 };
 
 export default usePerformanceHook;

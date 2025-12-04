@@ -1,7 +1,20 @@
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+export interface CatalogItem {
+  id: number;
+  img: string;
+  title: string;
+  price: number;
+}
+
+export interface CatalogRefs {
+  sectionContainer: React.RefObject<HTMLDivElement | null>;
+  divContainer: React.RefObject<HTMLDivElement | null>;
+  cardsContainer: React.RefObject<HTMLDivElement | null>;
+  cards: React.RefObject<HTMLDivElement | null>[];
+}
 
 export const catalogItems: CatalogItem[] = [
   {
@@ -42,47 +55,55 @@ export const catalogItems: CatalogItem[] = [
   },
 ];
 
-export interface CatalogItem {
-  id: number;
-  img: string;
-  title: string;
-  price: number;
-}
+const getCards = (refs: CatalogRefs): HTMLDivElement[] =>
+  Object.values(refs.cards)
+    .map((card) => card.current)
+    .filter((card): card is HTMLDivElement => card !== null);
 
-export interface CatalogRefs {
-  sectionContainer: React.RefObject<HTMLDivElement | null>;
-  divContainer: React.RefObject<HTMLDivElement | null>;
-  cardsContainer: React.RefObject<HTMLDivElement | null>;
-  cards: {
-    [key: `card${number}`]: React.RefObject<HTMLDivElement | null>;
-  };
-}
+const initializeCatalogAnimations = (refs: CatalogRefs, performanceLevel: PERFORMANCE_LEVEL) => {
+  const cards = getCards(refs);
+  if (cards.length === 0) return;
 
-export const initializeCatalogAnimations = (refs: CatalogRefs) => {
-  gsap.set(refs.cardsContainer.current, {
-    yPercent: '5',
-    opacity: 0,
+  cards.forEach((card) => {
+    gsap.set(card, {
+      opacity: 0,
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
+        filter: 'blur(10px)',
+      }),
+      yPercent: 25,
+    });
   });
 };
 
-export const animateCatalogEntry = (refs: CatalogRefs) => {
+const animateCatalogEntry = (refs: CatalogRefs, performanceLevel: PERFORMANCE_LEVEL) => {
+  const cards = getCards(refs);
+  if (cards.length === 0) return;
+
   const timeline = gsap.timeline({
     scrollTrigger: {
-      trigger: refs.sectionContainer.current,
+      trigger: refs.cardsContainer.current,
       start: 'top 60%',
-      end: 'bottom bottom',
+      once: true,
     },
   });
 
-  timeline.to(refs.cardsContainer.current, {
-    yPercent: 0,
-    opacity: 1,
-    duration: 1,
-    ease: 'power4.out',
-  });
+  timeline.to(
+    cards,
+    {
+      opacity: 1,
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
+        filter: 'blur(0px)',
+      }),
+      yPercent: 0,
+      duration: 1.2,
+      stagger: 0.05,
+      ease: 'power4.out',
+    },
+    '-=0.2',
+  );
 };
 
-export const animateScrollHorizontal = (refs: CatalogRefs) => {
+const animateScrollHorizontal = (refs: CatalogRefs) => {
   if (!refs.divContainer.current || !refs.cardsContainer.current) return;
 
   const slider = refs.cardsContainer.current;
@@ -115,4 +136,10 @@ export const animateScrollHorizontal = (refs: CatalogRefs) => {
       anticipatePin: 1,
     },
   });
+};
+
+export const catalogService = {
+  initializeCatalogAnimations,
+  animateCatalogEntry,
+  animateScrollHorizontal,
 };

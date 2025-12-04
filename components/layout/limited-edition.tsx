@@ -1,4 +1,3 @@
-import { useFontReady } from '@/hooks/useFontReady';
 import {
   animateLimitedEditionAnimations,
   LimitedEditionRefs,
@@ -9,7 +8,6 @@ import { useRef } from 'react';
 import Section from '../shared/sections';
 
 export default function LimitedEdition() {
-  const isFontReady = useFontReady();
   const refs: LimitedEditionRefs = {
     sectionContainer: useRef<HTMLDivElement>(null),
     divContainer: useRef<HTMLDivElement>(null),
@@ -31,9 +29,8 @@ export default function LimitedEdition() {
   };
 
   useGSAP(() => {
-    if (!isFontReady) return;
     animateLimitedEditionAnimations(refs);
-  }, [isFontReady]);
+  }, []);
 
   return (
     <Section
@@ -54,11 +51,15 @@ export default function LimitedEdition() {
               alt="Influencer 1"
               className="aspect-square h-auto w-full rounded-4xl object-cover"
               height={847}
+              loading="lazy"
               src="/images/influencer/img1.webp"
               width={640}
-              loading="lazy"
             />
-            <p ref={refs.cards.card1.description} className="h-12 text-left font-medium text-white">
+            <p
+              ref={refs.cards.card1.description}
+              aria-label="Limited Edition 1"
+              className="h-12 text-left font-medium text-white"
+            >
               International quality standards.
             </p>
           </div>
@@ -68,11 +69,15 @@ export default function LimitedEdition() {
               alt="Influencer 1"
               className="h-auto w-full rounded-4xl"
               height={1200}
+              loading="lazy"
               src="/images/influencer/img2.webp"
               width={904}
-              loading="lazy"
             />
-            <p ref={refs.cards.card2.description} className="h-12 text-left font-medium text-white">
+            <p
+              ref={refs.cards.card2.description}
+              aria-label="Limited Edition 2"
+              className="h-12 text-left font-medium text-white"
+            >
               Eyewear that blends timeless aesthetics with modern innovation.
             </p>
           </div>
@@ -82,11 +87,15 @@ export default function LimitedEdition() {
               alt="Influencer 1"
               className="aspect-video h-auto w-full rounded-4xl object-cover contrast-100"
               height={1024}
+              loading="lazy"
               src="/images/influencer/img3.webp"
               width={682}
-              loading="lazy"
             />
-            <p ref={refs.cards.card3.description} className="text-left font-medium text-white">
+            <p
+              ref={refs.cards.card3.description}
+              aria-label="Limited Edition 3"
+              className="text-left font-medium text-white"
+            >
               Handcrafted frames made from premium materials with exceptional attention to detail.
             </p>
           </div>

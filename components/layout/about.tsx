@@ -1,11 +1,9 @@
 import Section from '@/components/shared/sections';
-import { useFontReady } from '@/hooks/useFontReady';
 import { AboutRefs, animateAboutEntry } from '@/services/layout/about.service';
 import { useGSAP } from '@gsap/react';
 import { useRef } from 'react';
 
 export default function About() {
-  const isFontReady = useFontReady();
   const refs: AboutRefs = {
     sectionContainer: useRef<HTMLDivElement>(null),
     divContainer: useRef<HTMLDivElement>(null),
@@ -15,9 +13,8 @@ export default function About() {
   };
 
   useGSAP(() => {
-    if (!isFontReady) return;
     animateAboutEntry(refs);
-  }, [isFontReady]);
+  }, []);
 
   return (
     <Section
@@ -38,7 +35,11 @@ export default function About() {
             IT'S PART OF YOUR IMAGE.
           </h2>
         </div>
-        <p ref={refs.description} className="text-center text-balance text-white md:max-w-1/2">
+        <p
+          ref={refs.description}
+          aria-label="About the brand"
+          className="text-center text-balance text-white md:max-w-1/2"
+        >
           Our brand was born from the idea of combining aesthetics, comfort, and modern design. Each
           pair of glasses is the result of meticulous work by designers and craftsmen who believe
           that details define personality.
