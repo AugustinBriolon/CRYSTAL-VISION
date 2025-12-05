@@ -1,7 +1,15 @@
 import { scrollToSection } from '@/services/layout/header.service';
+import {
+  FooterAnimationState,
+  initializePath,
+  animateIn,
+  resetAnimation,
+  manageMouseMove,
+} from '@/services/layout/footer.service';
 import { useLenis } from 'lenis/react';
 import Link from 'next/link';
 import FullWidthTitle from '../ui/full-width-title';
+import { useEffect, useRef } from 'react';
 
 const Footer = () => {
   const lenis = useLenis();
@@ -10,15 +18,52 @@ const Footer = () => {
     scrollToSection(lenis, id);
   };
 
+  const svgRef = useRef<SVGSVGElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const progressRef = useRef<number>(0);
+  const xRef = useRef<number>(0.5);
+  const reqIdRef = useRef<number | null>(null);
+  const timeRef = useRef<number>(Math.PI / 2);
+
+  const animationState: FooterAnimationState = {
+    progress: progressRef,
+    x: xRef,
+    reqId: reqIdRef,
+    time: timeRef,
+    svgRef: svgRef,
+    pathRef: pathRef,
+  };
+
+  useEffect(() => {
+    initializePath(animationState);
+  }, []);
+
   return (
     <div
-      className="relative h-[600px] w-full bg-white md:h-[500px]"
+      className="relative h-[650px] w-full bg-white md:h-[550px]"
       style={{ clipPath: 'polygon(0% 0, 100% 0%, 100% 100%, 0 100%)' }}
     >
-      <footer className="fixed bottom-0 left-1/2 mx-auto flex h-[600px] w-full max-w-7xl -translate-x-1/2 flex-col bg-white p-6 text-black md:h-[500px] md:p-8">
-        {/* Titre en haut pour créer une séparation visuelle */}
-        <div className="mb-8 md:mb-12">
+      <footer className="fixed bottom-0 left-1/2 mx-auto flex h-[650px] w-full max-w-7xl -translate-x-1/2 flex-col gap-y-10 bg-white p-6 text-black md:h-[550px] md:p-8">
+        <div>
           <FullWidthTitle>CRYSTAL VISION</FullWidthTitle>
+        </div>
+
+        <div className="relative h-px w-full">
+          <span
+            className="relative -top-5 z-1 flex h-10 w-full"
+            onMouseEnter={() => {
+              animateIn(animationState);
+            }}
+            onMouseLeave={() => {
+              resetAnimation(animationState);
+            }}
+            onMouseMove={(e) => {
+              manageMouseMove(e, animationState);
+            }}
+          ></span>
+          <svg ref={svgRef} className="absolute -top-12 h-24 w-full">
+            <path ref={pathRef} fill="none" stroke="black" strokeWidth={1}></path>
+          </svg>
         </div>
 
         <div className="flex flex-1 flex-col gap-8 md:grid md:grid-cols-4 md:gap-12">

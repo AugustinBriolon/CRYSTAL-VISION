@@ -29,7 +29,7 @@ export default function Contact() {
         </h2>
         <Button
           ref={refs.button}
-          className="border border-white bg-transparent px-8 py-2.5 text-white"
+          className="border border-white bg-transparent px-8 py-2 text-white"
         >
           Order Now
         </Button>

@@ -30,7 +30,7 @@ const CatalogCard = forwardRef<HTMLDivElement, CatalogCardProps>(({ img, title, 
           <span>{price}</span>
           <span>$</span>
         </div>
-        <Button className="border bg-transparent px-6 py-2.5 text-black">Add to cart</Button>
+        <Button className="border bg-transparent px-8 py-2 text-black">Add to cart</Button>
       </div>
     </div>
   );
