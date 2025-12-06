@@ -3,7 +3,7 @@ import { isLocalhost, isProduction } from '@/utils/localhost.utils';
 
 export const useEnvironment = () => {
   const [isProd, setIsProd] = useState(true);
-  const [isDev, setIsDev] = useState(true);
+  const [isDev, setIsDev] = useState(false);
   const [environment, setEnvironment] = useState('production');
 
   useEffect(() => {
