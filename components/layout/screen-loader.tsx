@@ -5,8 +5,8 @@ import gsap from 'gsap';
 import { useRef, useState } from 'react';
 
 const ScreenLoader = () => {
-  const screenLoaderRef = useRef(null);
-  const counterRef = useRef(null);
+  const screenLoaderRef = useRef<HTMLDivElement>(null);
+  const counterRef = useRef<HTMLHeadingElement>(null);
   const [counterComplete, setCounterComplete] = useState(false);
   const [counter, setCounter] = useState(0);
   const { contextSafe } = useGSAP();
@@ -28,15 +28,17 @@ const ScreenLoader = () => {
   });
 
   const revealAnimation = contextSafe(() => {
+    if (!counterRef.current) return;
+
     gsap.set(counterRef.current, {
-      top: 'calc(100% - 100px)',
+      top: `calc(100% - ${counterRef.current.getBoundingClientRect().height || 0}px)`,
       opacity: 1,
     });
 
     const timeline = gsap.timeline();
 
     timeline.to(counterRef.current, {
-      top: 'calc(0% + 100px)',
+      top: '0%',
       duration: 2,
       ease: 'power2.inOut',
     });
@@ -67,12 +69,14 @@ const ScreenLoader = () => {
       ref={screenLoaderRef}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black"
     >
-      <h1
-        ref={counterRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-8xl font-bold text-white opacity-0"
-      >
-        {counter}
-      </h1>
+      <div className="relative my-auto h-[95vh] w-full">
+        <h1
+          ref={counterRef}
+          className="absolute left-1/2 -translate-x-1/2 text-center text-[25vw]! leading-none font-bold text-white opacity-0"
+        >
+          {counter}
+        </h1>
+      </div>
       {counterComplete && isLoading && (
         <div className="mt-4 text-sm text-white opacity-50">Analyzing performance...</div>
       )}

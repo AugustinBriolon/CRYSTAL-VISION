@@ -17,12 +17,7 @@ export default function Hero() {
     container: useRef<HTMLDivElement>(null),
     title: useRef<HTMLHeadingElement>(null),
     image: useRef<HTMLDivElement>(null),
-    extraText: {
-      first: useRef<HTMLParagraphElement>(null),
-      second: useRef<HTMLParagraphElement>(null),
-      third: useRef<HTMLParagraphElement>(null),
-      fourth: useRef<HTMLParagraphElement>(null),
-    },
+    extraTextContainer: useRef<HTMLDivElement>(null),
     titleImage: useRef<HTMLDivElement>(null),
   };
 
@@ -65,30 +60,27 @@ export default function Hero() {
             </div>
           </div>
         </div>
-        <div className="col-start-3 row-start-2 row-end-2 flex flex-col items-start justify-center">
+        <div
+          ref={refs.extraTextContainer}
+          className="col-start-3 row-start-2 row-end-2 flex flex-col items-start justify-center"
+        >
           <div className="overflow-hidden">
-            <p ref={refs.extraText.first} className="text-sm font-medium md:text-lg">
-              Exclusive
-            </p>
+            <p className="anim-extra-text text-sm font-medium md:text-lg">Exclusive</p>
           </div>
           <div className="overflow-hidden">
-            <p ref={refs.extraText.second} className="text-sm font-medium md:text-lg">
-              design
-            </p>
+            <p className="anim-extra-text text-sm font-medium md:text-lg">design</p>
           </div>
           <div className="overflow-hidden">
-            <p ref={refs.extraText.third} className="text-sm font-medium md:text-lg">
-              without
-            </p>
+            <p className="anim-extra-text text-sm font-medium md:text-lg">without</p>
           </div>
           <div className="overflow-hidden">
-            <p ref={refs.extraText.fourth} className="text-sm font-medium md:text-lg">
-              compromise.
-            </p>
+            <p className="anim-extra-text text-sm font-medium md:text-lg">compromise.</p>
           </div>
         </div>
         <div className="absolute right-0 bottom-25 -z-1 h-fit w-full overflow-hidden px-4 md:bottom-8">
-          <FullWidthTitle ref={refs.titleImage}>CRYSTAL VISION</FullWidthTitle>
+          <FullWidthTitle ref={refs.titleImage}>
+            <h1 className="font-size-unset">CRYSTAL VISION</h1>
+          </FullWidthTitle>
         </div>
       </div>
     </Section>

@@ -4,28 +4,9 @@ import React from 'react';
 export interface HeaderRefs {
   logo: React.RefObject<HTMLAnchorElement | null>;
   linksContainer: React.RefObject<HTMLDivElement | null>;
-  links: {
-    about: React.RefObject<HTMLAnchorElement | null>;
-    catalog: React.RefObject<HTMLAnchorElement | null>;
-    influencer: React.RefObject<HTMLAnchorElement | null>;
-    limitedEdition: React.RefObject<HTMLAnchorElement | null>;
-    contact: React.RefObject<HTMLAnchorElement | null>;
-  };
   cart: React.RefObject<HTMLButtonElement | null>;
   menuButton: React.RefObject<HTMLButtonElement | null>;
-  menuLine: {
-    line1: React.RefObject<HTMLSpanElement | null>;
-    line2: React.RefObject<HTMLSpanElement | null>;
-    line3: React.RefObject<HTMLSpanElement | null>;
-  };
   mobileMenu: React.RefObject<HTMLDivElement | null>;
-  mobileMenuLinks: {
-    about: React.RefObject<HTMLAnchorElement | null>;
-    catalog: React.RefObject<HTMLAnchorElement | null>;
-    influencer: React.RefObject<HTMLAnchorElement | null>;
-    limitedEdition: React.RefObject<HTMLAnchorElement | null>;
-    contact: React.RefObject<HTMLAnchorElement | null>;
-  };
 }
 
 export type LenisInstance = {
@@ -91,13 +72,7 @@ export const animateHeaderEntry = (refs: HeaderRefs) => {
       },
     )
     .from(
-      [
-        refs.links.about.current,
-        refs.links.catalog.current,
-        refs.links.influencer.current,
-        refs.links.limitedEdition.current,
-        refs.links.contact.current,
-      ],
+      refs.linksContainer.current?.querySelectorAll('.anim-link') || [],
       {
         y: -50,
         duration: 1.2,
@@ -116,22 +91,12 @@ export const initializeMobileMenu = (refs: HeaderRefs) => {
 
   gsap.set(refs.mobileMenu.current, {
     opacity: 0,
-    y: -20,
     pointerEvents: 'none',
   });
 
-  gsap.set(
-    [
-      refs.mobileMenuLinks.about.current,
-      refs.mobileMenuLinks.catalog.current,
-      refs.mobileMenuLinks.influencer.current,
-      refs.mobileMenuLinks.limitedEdition.current,
-      refs.mobileMenuLinks.contact.current,
-    ],
-    {
-      yPercent: 100,
-    },
-  );
+  gsap.set(refs.mobileMenu.current?.querySelectorAll('.anim-link') || [], {
+    yPercent: 100,
+  });
 };
 
 export const animateMobileMenuOpen = (refs: HeaderRefs) => {
@@ -142,13 +107,12 @@ export const animateMobileMenuOpen = (refs: HeaderRefs) => {
   timeline
     .to(refs.mobileMenu.current, {
       opacity: 1,
-      y: 0,
       pointerEvents: 'auto',
       duration: 0.4,
       ease: 'power2.out',
     })
     .to(
-      refs.menuLine.line1.current,
+      refs.menuButton.current?.querySelectorAll('.anim-line:nth-child(1)') || [],
       {
         y: 7,
         scale: 1.3,
@@ -159,17 +123,17 @@ export const animateMobileMenuOpen = (refs: HeaderRefs) => {
       '-=0.2',
     )
     .to(
-      refs.menuLine.line2.current,
+      refs.menuButton.current?.querySelectorAll('.anim-line:nth-child(2)') || [],
       {
         opacity: 0,
         scale: 0,
         duration: 0.2,
         ease: 'power2.inOut',
       },
-      '-=0.3',
+      '<',
     )
     .to(
-      refs.menuLine.line3.current,
+      refs.menuButton.current?.querySelectorAll('.anim-line:nth-child(3)') || [],
       {
         y: -9,
         scale: 1.3,
@@ -177,23 +141,17 @@ export const animateMobileMenuOpen = (refs: HeaderRefs) => {
         duration: 0.3,
         ease: 'power2.inOut',
       },
-      '-=0.3',
+      '<',
     )
     .to(
-      [
-        refs.mobileMenuLinks.about.current,
-        refs.mobileMenuLinks.catalog.current,
-        refs.mobileMenuLinks.influencer.current,
-        refs.mobileMenuLinks.limitedEdition.current,
-        refs.mobileMenuLinks.contact.current,
-      ],
+      refs.mobileMenu.current?.querySelectorAll('.anim-link') || [],
       {
         yPercent: 0,
         duration: 0.5,
         stagger: 0.03,
         ease: 'power2.out',
       },
-      '-=0.2',
+      '<',
     );
 
   return timeline;
@@ -206,24 +164,15 @@ export const animateMobileMenuClose = (refs: HeaderRefs, onComplete?: () => void
     onComplete,
   });
 
-  timeline.to(
-    [
-      refs.mobileMenuLinks.about.current,
-      refs.mobileMenuLinks.catalog.current,
-      refs.mobileMenuLinks.influencer.current,
-      refs.mobileMenuLinks.limitedEdition.current,
-      refs.mobileMenuLinks.contact.current,
-    ],
-    {
-      yPercent: 100,
-      duration: 0.5,
-      stagger: 0.03,
-      ease: 'power2.in',
-    },
-  );
+  timeline.to(refs.mobileMenu.current?.querySelectorAll('.anim-link') || [], {
+    yPercent: 100,
+    duration: 0.5,
+    stagger: 0.03,
+    ease: 'power2.in',
+  });
 
   timeline.to(
-    refs.menuLine.line1.current,
+    refs.menuButton.current?.querySelectorAll('.anim-line:nth-child(1)') || [],
     {
       y: 0,
       scale: 1,
@@ -235,7 +184,7 @@ export const animateMobileMenuClose = (refs: HeaderRefs, onComplete?: () => void
   );
 
   timeline.to(
-    refs.menuLine.line3.current,
+    refs.menuButton.current?.querySelectorAll('.anim-line:nth-child(3)') || [],
     {
       y: 0,
       scale: 1,
@@ -247,7 +196,7 @@ export const animateMobileMenuClose = (refs: HeaderRefs, onComplete?: () => void
   );
 
   timeline.to(
-    refs.menuLine.line2.current,
+    refs.menuButton.current?.querySelectorAll('.anim-line:nth-child(2)') || [],
     {
       opacity: 1,
       scale: 1,
@@ -261,7 +210,6 @@ export const animateMobileMenuClose = (refs: HeaderRefs, onComplete?: () => void
     refs.mobileMenu.current,
     {
       opacity: 0,
-      y: -20,
       pointerEvents: 'none',
       duration: 0.3,
       ease: 'power2.in',

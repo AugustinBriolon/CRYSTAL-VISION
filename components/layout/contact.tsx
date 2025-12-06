@@ -6,7 +6,6 @@ import { Button } from '../ui/button';
 
 export default function Contact() {
 
-
   const refs: ContactRefs = {
     sectionContainer: useRef<HTMLDivElement>(null),
     title: useRef<HTMLHeadingElement>(null),

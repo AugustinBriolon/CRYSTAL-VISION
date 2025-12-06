@@ -4,12 +4,7 @@ export interface HeroRefs {
   container: React.RefObject<HTMLDivElement | null>;
   title: React.RefObject<HTMLHeadingElement | null>;
   image: React.RefObject<HTMLDivElement | null>;
-  extraText: {
-    first: React.RefObject<HTMLParagraphElement | null>;
-    second: React.RefObject<HTMLParagraphElement | null>;
-    third: React.RefObject<HTMLParagraphElement | null>;
-    fourth: React.RefObject<HTMLParagraphElement | null>;
-  };
+  extraTextContainer: React.RefObject<HTMLDivElement | null>;
   titleImage: React.RefObject<HTMLDivElement | null>;
 }
 
@@ -18,13 +13,7 @@ export const initializeHeroAnimations = (refs: HeroRefs) => {
   gsap.set(refs.titleImage.current, { yPercent: 100, scale: 0.9 });
   gsap.set(refs.image.current, { yPercent: -100 });
   gsap.set(
-    [
-      refs.title.current,
-      refs.extraText.first.current,
-      refs.extraText.second.current,
-      refs.extraText.third.current,
-      refs.extraText.fourth.current,
-    ],
+    [refs.title.current, refs.extraTextContainer.current?.querySelectorAll('.anim-extra-text') || []],
     { yPercent: 100 },
   );
 };
@@ -50,6 +39,14 @@ export const animateHeroEntry = (refs: HeroRefs) => {
       '-=1.2',
     )
     .to(
+      refs.container.current,
+      {
+        borderRadius: 0,
+        duration: 1,
+      },
+      '<',
+    )
+    .to(
       refs.title.current,
       {
         yPercent: 0,
@@ -68,12 +65,7 @@ export const animateHeroEntry = (refs: HeroRefs) => {
       '<',
     )
     .to(
-      [
-        refs.extraText.first.current,
-        refs.extraText.second.current,
-        refs.extraText.third.current,
-        refs.extraText.fourth.current,
-      ],
+      [refs.extraTextContainer.current?.querySelectorAll('.anim-extra-text') || []],
       {
         yPercent: 0,
         duration: 0.8,
