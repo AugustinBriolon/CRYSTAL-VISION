@@ -77,7 +77,7 @@ export default function Hero() {
             <p className="anim-extra-text text-sm font-medium md:text-lg">compromise.</p>
           </div>
         </div>
-        <div className="absolute right-0 bottom-25 -z-1 h-fit w-full overflow-hidden px-4 md:bottom-8">
+        <div className="absolute right-0 bottom-0 -z-1 h-fit w-full overflow-hidden px-4 md:bottom-8">
           <FullWidthTitle ref={refs.titleImage}>
             <h1 className="font-size-unset">CRYSTAL VISION</h1>
           </FullWidthTitle>
